@@ -955,7 +955,7 @@ function FischnishedUI:CreateWindow(config)
     end)
     
     CloseButton.MouseButton1Click:Connect(function()
-        CreateRipple(CloseButton, UDim2.new(0.5, 0, 0.5, 0))
+        CreateRipple(CloseButton, Color3.fromRGB(255, 255, 255))
         TweenService:Create(MainFrame, MOTION.Spring, {
             Size = UDim2.new(0, 0, 0, 0),
             Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -1092,7 +1092,7 @@ function FischnishedUI:CreateWindow(config)
         
         -- Tab selection logic
         TabButton.MouseButton1Click:Connect(function()
-            CreateRipple(TabButton, UDim2.new(0, 0, 0.5, 0))
+            CreateRipple(TabButton, COLORS.Primary)
             self:SelectTab(TabInstance)
         end)
         
