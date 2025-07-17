@@ -28,6 +28,7 @@ local CONFIG = {
         {path = "src/features/crates.lua", category = "features", name = "crates"},
         {path = "src/features/codes.lua", category = "features", name = "codes"},
         {path = "src/features/oxygen.lua", category = "features", name = "oxygen"},
+        {path = "src/ui/fischnished_complete.lua", category = "ui", name = "fischnished_complete"},
         {path = "src/ui/rayfield.lua", category = "ui", name = "rayfield"}
     }
 }
@@ -148,12 +149,12 @@ local function initializeFischnished()
             end)
             
             if not success then
-                warn("Failed to initialize UI: " .. tostring(err))
+                warn("Failed to initialize FischnishedUI: " .. tostring(err))
                 -- Fallback: create a simple notification
-                print("UI initialization failed, but core modules loaded successfully.")
+                print("FischnishedUI initialization failed, but core modules loaded successfully.")
             end
         else
-            warn("UI module not available - modules may not have loaded correctly")
+            warn("FischnishedUI module not available - modules may not have loaded correctly")
         end
         
         print("=== Fischnished Loaded Successfully ===")
