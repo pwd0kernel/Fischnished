@@ -14,7 +14,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CONFIG = {
     VERSION = "1.0.0",
     DISCORD = "Tesm6dDcDC",
-    GITHUB_BASE = "https://raw.githubusercontent.com/yourusername/fischnished-cheat/main/",
+    GITHUB_BASE = "https://raw.githubusercontent.com/pwd0kernel/Fischnished/main/",
     
     -- File loading order (dependencies first)
     FILES = {
