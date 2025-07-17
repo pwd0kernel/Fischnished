@@ -74,329 +74,6 @@ local function CreateShadow(parent, size, position, color)
 end
 
 -- Main Window Class
-function FischnishedUI:CreateWindow(config)
-    local Window = {
-        Name = config.Name or "Fischnished UI",
-        Size = config.Size or UDim2.new(0, 600, 0, 450),
-        Tabs = {},
-        CurrentTab = nil,
-        Config = config,
-        Dragging = false,
-        DragStart = nil,
-        StartPos = nil
-    }
-    
-    -- Create main GUI
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Name = "FischnishedUI"
-    ScreenGui.ResetOnSpawn = false
-    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    ScreenGui.Parent = CoreGui
-    Window.Gui = ScreenGui
-    
-    -- Create main frame
-    local MainFrame = Instance.new("Frame")
-    MainFrame.Name = "MainFrame"
-    MainFrame.Size = Window.Size
-    MainFrame.Position = UDim2.new(0.5, -Window.Size.X.Offset/2, 0.5, -Window.Size.Y.Offset/2)
-    MainFrame.BackgroundColor3 = COLORS.Background
-    MainFrame.BorderSizePixel = 0
-    MainFrame.ClipsDescendants = true
-    MainFrame.Parent = ScreenGui
-    Window.MainFrame = MainFrame
-    
-    CreateCorner(16).Parent = MainFrame
-    CreateStroke(2, COLORS.Primary).Parent = MainFrame
-    CreateShadow(MainFrame, UDim2.new(1, 20, 1, 20), UDim2.new(0, -10, 0, -10))
-    
-    -- Title bar
-    local TitleBar = Instance.new("Frame")
-    TitleBar.Name = "TitleBar"
-    TitleBar.Size = UDim2.new(1, 0, 0, 50)
-    TitleBar.Position = UDim2.new(0, 0, 0, 0)
-    TitleBar.BackgroundColor3 = COLORS.Primary
-    TitleBar.BorderSizePixel = 0
-    TitleBar.Parent = MainFrame
-    
-    CreateCorner(16).Parent = TitleBar
-    local titleCornerFix = Instance.new("Frame")
-    titleCornerFix.Size = UDim2.new(1, 0, 0, 20)
-    titleCornerFix.Position = UDim2.new(0, 0, 1, -20)
-    titleCornerFix.BackgroundColor3 = COLORS.Primary
-    titleCornerFix.BorderSizePixel = 0
-    titleCornerFix.Parent = TitleBar
-    
-    -- Title text
-    local TitleText = Instance.new("TextLabel")
-    TitleText.Name = "TitleText"
-    TitleText.Size = UDim2.new(1, -100, 1, 0)
-    TitleText.Position = UDim2.new(0, 20, 0, 0)
-    TitleText.BackgroundTransparency = 1
-    TitleText.Text = Window.Name
-    TitleText.TextColor3 = COLORS.Text
-    TitleText.TextSize = 18
-    TitleText.Font = FONTS.Bold
-    TitleText.TextXAlignment = Enum.TextXAlignment.Left
-    TitleText.Parent = TitleBar
-    
-    -- Close button
-    local CloseButton = Instance.new("TextButton")
-    CloseButton.Name = "CloseButton"
-    CloseButton.Size = UDim2.new(0, 30, 0, 30)
-    CloseButton.Position = UDim2.new(1, -40, 0, 10)
-    CloseButton.BackgroundColor3 = COLORS.Error
-    CloseButton.BorderSizePixel = 0
-    CloseButton.Text = "×"
-    CloseButton.TextColor3 = COLORS.Text
-    CloseButton.TextSize = 20
-    CloseButton.Font = FONTS.Bold
-    CloseButton.Parent = TitleBar
-    
-    CreateCorner(15).Parent = CloseButton
-    
-    CloseButton.MouseButton1Click:Connect(function()
-        TweenService:Create(MainFrame, ANIMATIONS.Medium, {
-            Size = UDim2.new(0, 0, 0, 0),
-            Position = UDim2.new(0.5, 0, 0.5, 0)
-        }):Play()
-        wait(0.3)
-        ScreenGui:Destroy()
-    end)
-    
-    -- Minimize button
-    local MinimizeButton = Instance.new("TextButton")
-    MinimizeButton.Name = "MinimizeButton"
-    MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
-    MinimizeButton.Position = UDim2.new(1, -75, 0, 10)
-    MinimizeButton.BackgroundColor3 = COLORS.Warning
-    MinimizeButton.BorderSizePixel = 0
-    MinimizeButton.Text = "−"
-    MinimizeButton.TextColor3 = COLORS.Text
-    MinimizeButton.TextSize = 20
-    MinimizeButton.Font = FONTS.Bold
-    MinimizeButton.Parent = TitleBar
-    
-    CreateCorner(15).Parent = MinimizeButton
-    
-    local minimized = false
-    MinimizeButton.MouseButton1Click:Connect(function()
-        minimized = not minimized
-        local targetSize = minimized and UDim2.new(0, 300, 0, 50) or Window.Size
-        TweenService:Create(MainFrame, ANIMATIONS.Medium, {Size = targetSize}):Play()
-    end)
-    
-    -- Tab container
-    local TabContainer = Instance.new("Frame")
-    TabContainer.Name = "TabContainer"
-    TabContainer.Size = UDim2.new(0, 150, 1, -60)
-    TabContainer.Position = UDim2.new(0, 10, 0, 60)
-    TabContainer.BackgroundColor3 = COLORS.Surface
-    TabContainer.BorderSizePixel = 0
-    TabContainer.Parent = MainFrame
-    Window.TabContainer = TabContainer
-    
-    CreateCorner(12).Parent = TabContainer
-    
-    -- Content area
-    local ContentArea = Instance.new("Frame")
-    ContentArea.Name = "ContentArea"
-    ContentArea.Size = UDim2.new(1, -180, 1, -60)
-    ContentArea.Position = UDim2.new(0, 170, 0, 60)
-    ContentArea.BackgroundColor3 = COLORS.Surface
-    ContentArea.BorderSizePixel = 0
-    ContentArea.Parent = MainFrame
-    Window.ContentArea = ContentArea
-    
-    CreateCorner(12).Parent = ContentArea
-    
-    -- Add scrolling to content
-    local ContentScroll = Instance.new("ScrollingFrame")
-    ContentScroll.Name = "ContentScroll"
-    ContentScroll.Size = UDim2.new(1, -20, 1, -20)
-    ContentScroll.Position = UDim2.new(0, 10, 0, 10)
-    ContentScroll.BackgroundTransparency = 1
-    ContentScroll.BorderSizePixel = 0
-    ContentScroll.ScrollBarThickness = 8
-    ContentScroll.ScrollBarImageColor3 = COLORS.Primary
-    ContentScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-    ContentScroll.Parent = ContentArea
-    Window.ContentScroll = ContentScroll
-    
-    -- Layout for content
-    local ContentLayout = Instance.new("UIListLayout")
-    ContentLayout.Padding = UDim.new(0, 10)
-    ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    ContentLayout.Parent = ContentScroll
-    
-    -- Auto-resize content
-    ContentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        ContentScroll.CanvasSize = UDim2.new(0, 0, 0, ContentLayout.AbsoluteContentSize.Y + 20)
-    end)
-    
-    -- Tab scrolling
-    local TabScroll = Instance.new("ScrollingFrame")
-    TabScroll.Name = "TabScroll"
-    TabScroll.Size = UDim2.new(1, -10, 1, -10)
-    TabScroll.Position = UDim2.new(0, 5, 0, 5)
-    TabScroll.BackgroundTransparency = 1
-    TabScroll.BorderSizePixel = 0
-    TabScroll.ScrollBarThickness = 6
-    TabScroll.ScrollBarImageColor3 = COLORS.Primary
-    TabScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
-    TabScroll.Parent = TabContainer
-    Window.TabScroll = TabScroll
-    
-    local TabLayout = Instance.new("UIListLayout")
-    TabLayout.Padding = UDim.new(0, 5)
-    TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    TabLayout.Parent = TabScroll
-    
-    TabLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        TabScroll.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y + 10)
-    end)
-    
-    -- Dragging functionality
-    local function onDragStart(input)
-        Window.Dragging = true
-        Window.DragStart = input.Position
-        Window.StartPos = MainFrame.Position
-    end
-    
-    local function onDragEnd()
-        Window.Dragging = false
-    end
-    
-    local function onDrag(input)
-        if Window.Dragging then
-            local delta = input.Position - Window.DragStart
-            MainFrame.Position = UDim2.new(
-                Window.StartPos.X.Scale,
-                Window.StartPos.X.Offset + delta.X,
-                Window.StartPos.Y.Scale,
-                Window.StartPos.Y.Offset + delta.Y
-            )
-        end
-    end
-    
-    TitleBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            onDragStart(input)
-        end
-    end)
-    
-    UserInputService.InputChanged:Connect(onDrag)
-    UserInputService.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            onDragEnd()
-        end
-    end)
-    
-    -- Window methods
-    function Window:CreateTab(name, icon)
-        local Tab = {
-            Name = name,
-            Icon = icon,
-            Active = false,
-            Elements = {},
-            Window = self
-        }
-        
-        -- Tab button
-        local TabButton = Instance.new("TextButton")
-        TabButton.Name = "TabButton_" .. name
-        TabButton.Size = UDim2.new(1, -10, 0, 40)
-        TabButton.BackgroundColor3 = COLORS.Background
-        TabButton.BorderSizePixel = 0
-        TabButton.Text = (icon and icon .. " " or "") .. name
-        TabButton.TextColor3 = COLORS.TextSecondary
-        TabButton.TextSize = 14
-        TabButton.Font = FONTS.Regular
-        TabButton.TextXAlignment = Enum.TextXAlignment.Left
-        TabButton.Parent = self.TabScroll
-        Tab.Button = TabButton
-        
-        CreateCorner(8).Parent = TabButton
-        
-        -- Tab content container
-        local TabContent = Instance.new("Frame")
-        TabContent.Name = "TabContent_" .. name
-        TabContent.Size = UDim2.new(1, 0, 1, 0)
-        TabContent.BackgroundTransparency = 1
-        TabContent.Visible = false
-        TabContent.Parent = self.ContentScroll
-        Tab.Content = TabContent
-        
-        -- Padding for tab button
-        local TabPadding = Instance.new("UIPadding")
-        TabPadding.PaddingLeft = UDim.new(0, 15)
-        TabPadding.Parent = TabButton
-        
-        -- Tab selection logic
-        TabButton.MouseButton1Click:Connect(function()
-            self:SelectTab(Tab)
-        end)
-        
-        -- Hover effect
-        TabButton.MouseEnter:Connect(function()
-            if not Tab.Active then
-                TweenService:Create(TabButton, ANIMATIONS.Fast, {
-                    BackgroundColor3 = COLORS.Surface
-                }):Play()
-            end
-        end)
-        
-        TabButton.MouseLeave:Connect(function()
-            if not Tab.Active then
-                TweenService:Create(TabButton, ANIMATIONS.Fast, {
-                    BackgroundColor3 = COLORS.Background
-                }):Play()
-            end
-        end)
-        
-        -- Select first tab by default
-        if #self.Tabs == 0 then
-            self:SelectTab(Tab)
-        end
-        
-        table.insert(self.Tabs, Tab)
-        return Tab
-    end
-    
-    function Window:SelectTab(tab)
-        -- Deselect current tab
-        if self.CurrentTab then
-            self.CurrentTab.Active = false
-            self.CurrentTab.Content.Visible = false
-            TweenService:Create(self.CurrentTab.Button, ANIMATIONS.Fast, {
-                BackgroundColor3 = COLORS.Background,
-                TextColor3 = COLORS.TextSecondary
-            }):Play()
-        end
-        
-        -- Select new tab
-        tab.Active = true
-        tab.Content.Visible = true
-        self.CurrentTab = tab
-        
-        TweenService:Create(tab.Button, ANIMATIONS.Fast, {
-            BackgroundColor3 = COLORS.Primary,
-            TextColor3 = COLORS.Text
-        }):Play()
-    end
-    
-    -- Entrance animation
-    MainFrame.Size = UDim2.new(0, 0, 0, 0)
-    MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    
-    TweenService:Create(MainFrame, ANIMATIONS.Bounce, {
-        Size = Window.Size,
-        Position = UDim2.new(0.5, -Window.Size.X.Offset/2, 0.5, -Window.Size.Y.Offset/2)
-    }):Play()
-    
-    return Window
-end
-
--- Tab element creation methods will be added to the Tab object
 local Tab = {}
 Tab.__index = Tab
 
@@ -959,24 +636,334 @@ function Tab:CreateParagraph(config)
     return ParagraphFrame
 end
 
--- Extend Tab methods to the created tabs
+-- Main CreateWindow function for FischnishedUI
 function FischnishedUI:CreateWindow(config)
-    local window = Window
+    local Window = {
+        Name = config.Name or "Fischnished UI",
+        Size = config.Size or UDim2.new(0, 600, 0, 450),
+        Tabs = {},
+        CurrentTab = nil,
+        Config = config,
+        Dragging = false,
+        DragStart = nil,
+        StartPos = nil
+    }
     
-    -- Add Tab methods to each created tab
-    local originalCreateTab = window.CreateTab
-    function window:CreateTab(name, icon)
-        local tab = originalCreateTab(self, name, icon)
-        
-        -- Add all the Tab methods to the tab
-        for methodName, method in pairs(Tab) do
-            tab[methodName] = method
-        end
-        
-        return tab
+    -- Create main GUI
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "FischnishedUI"
+    ScreenGui.ResetOnSpawn = false
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    ScreenGui.Parent = CoreGui
+    Window.Gui = ScreenGui
+    
+    -- Create main frame
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Name = "MainFrame"
+    MainFrame.Size = Window.Size
+    MainFrame.Position = UDim2.new(0.5, -Window.Size.X.Offset/2, 0.5, -Window.Size.Y.Offset/2)
+    MainFrame.BackgroundColor3 = COLORS.Background
+    MainFrame.BorderSizePixel = 0
+    MainFrame.ClipsDescendants = true
+    MainFrame.Parent = ScreenGui
+    Window.MainFrame = MainFrame
+    
+    CreateCorner(16).Parent = MainFrame
+    CreateStroke(2, COLORS.Primary).Parent = MainFrame
+    CreateShadow(MainFrame, UDim2.new(1, 20, 1, 20), UDim2.new(0, -10, 0, -10))
+    
+    -- Title bar
+    local TitleBar = Instance.new("Frame")
+    TitleBar.Name = "TitleBar"
+    TitleBar.Size = UDim2.new(1, 0, 0, 50)
+    TitleBar.Position = UDim2.new(0, 0, 0, 0)
+    TitleBar.BackgroundColor3 = COLORS.Primary
+    TitleBar.BorderSizePixel = 0
+    TitleBar.Parent = MainFrame
+    
+    CreateCorner(16).Parent = TitleBar
+    local titleCornerFix = Instance.new("Frame")
+    titleCornerFix.Size = UDim2.new(1, 0, 0, 20)
+    titleCornerFix.Position = UDim2.new(0, 0, 1, -20)
+    titleCornerFix.BackgroundColor3 = COLORS.Primary
+    titleCornerFix.BorderSizePixel = 0
+    titleCornerFix.Parent = TitleBar
+    
+    -- Title text
+    local TitleText = Instance.new("TextLabel")
+    TitleText.Name = "TitleText"
+    TitleText.Size = UDim2.new(1, -100, 1, 0)
+    TitleText.Position = UDim2.new(0, 20, 0, 0)
+    TitleText.BackgroundTransparency = 1
+    TitleText.Text = Window.Name
+    TitleText.TextColor3 = COLORS.Text
+    TitleText.TextSize = 18
+    TitleText.Font = FONTS.Bold
+    TitleText.TextXAlignment = Enum.TextXAlignment.Left
+    TitleText.Parent = TitleBar
+    
+    -- Close button
+    local CloseButton = Instance.new("TextButton")
+    CloseButton.Name = "CloseButton"
+    CloseButton.Size = UDim2.new(0, 30, 0, 30)
+    CloseButton.Position = UDim2.new(1, -40, 0, 10)
+    CloseButton.BackgroundColor3 = COLORS.Error
+    CloseButton.BorderSizePixel = 0
+    CloseButton.Text = "×"
+    CloseButton.TextColor3 = COLORS.Text
+    CloseButton.TextSize = 20
+    CloseButton.Font = FONTS.Bold
+    CloseButton.Parent = TitleBar
+    
+    CreateCorner(15).Parent = CloseButton
+    
+    CloseButton.MouseButton1Click:Connect(function()
+        TweenService:Create(MainFrame, ANIMATIONS.Medium, {
+            Size = UDim2.new(0, 0, 0, 0),
+            Position = UDim2.new(0.5, 0, 0.5, 0)
+        }):Play()
+        wait(0.3)
+        ScreenGui:Destroy()
+    end)
+    
+    -- Minimize button
+    local MinimizeButton = Instance.new("TextButton")
+    MinimizeButton.Name = "MinimizeButton"
+    MinimizeButton.Size = UDim2.new(0, 30, 0, 30)
+    MinimizeButton.Position = UDim2.new(1, -75, 0, 10)
+    MinimizeButton.BackgroundColor3 = COLORS.Warning
+    MinimizeButton.BorderSizePixel = 0
+    MinimizeButton.Text = "−"
+    MinimizeButton.TextColor3 = COLORS.Text
+    MinimizeButton.TextSize = 20
+    MinimizeButton.Font = FONTS.Bold
+    MinimizeButton.Parent = TitleBar
+    
+    CreateCorner(15).Parent = MinimizeButton
+    
+    local minimized = false
+    MinimizeButton.MouseButton1Click:Connect(function()
+        minimized = not minimized
+        local targetSize = minimized and UDim2.new(0, 300, 0, 50) or Window.Size
+        TweenService:Create(MainFrame, ANIMATIONS.Medium, {Size = targetSize}):Play()
+    end)
+    
+    -- Tab container
+    local TabContainer = Instance.new("Frame")
+    TabContainer.Name = "TabContainer"
+    TabContainer.Size = UDim2.new(0, 150, 1, -60)
+    TabContainer.Position = UDim2.new(0, 10, 0, 60)
+    TabContainer.BackgroundColor3 = COLORS.Surface
+    TabContainer.BorderSizePixel = 0
+    TabContainer.Parent = MainFrame
+    Window.TabContainer = TabContainer
+    
+    CreateCorner(12).Parent = TabContainer
+    
+    -- Content area
+    local ContentArea = Instance.new("Frame")
+    ContentArea.Name = "ContentArea"
+    ContentArea.Size = UDim2.new(1, -180, 1, -60)
+    ContentArea.Position = UDim2.new(0, 170, 0, 60)
+    ContentArea.BackgroundColor3 = COLORS.Surface
+    ContentArea.BorderSizePixel = 0
+    ContentArea.Parent = MainFrame
+    Window.ContentArea = ContentArea
+    
+    CreateCorner(12).Parent = ContentArea
+    
+    -- Add scrolling to content
+    local ContentScroll = Instance.new("ScrollingFrame")
+    ContentScroll.Name = "ContentScroll"
+    ContentScroll.Size = UDim2.new(1, -20, 1, -20)
+    ContentScroll.Position = UDim2.new(0, 10, 0, 10)
+    ContentScroll.BackgroundTransparency = 1
+    ContentScroll.BorderSizePixel = 0
+    ContentScroll.ScrollBarThickness = 8
+    ContentScroll.ScrollBarImageColor3 = COLORS.Primary
+    ContentScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    ContentScroll.Parent = ContentArea
+    Window.ContentScroll = ContentScroll
+    
+    -- Layout for content
+    local ContentLayout = Instance.new("UIListLayout")
+    ContentLayout.Padding = UDim.new(0, 10)
+    ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ContentLayout.Parent = ContentScroll
+    
+    -- Auto-resize content
+    ContentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        ContentScroll.CanvasSize = UDim2.new(0, 0, 0, ContentLayout.AbsoluteContentSize.Y + 20)
+    end)
+    
+    -- Tab scrolling
+    local TabScroll = Instance.new("ScrollingFrame")
+    TabScroll.Name = "TabScroll"
+    TabScroll.Size = UDim2.new(1, -10, 1, -10)
+    TabScroll.Position = UDim2.new(0, 5, 0, 5)
+    TabScroll.BackgroundTransparency = 1
+    TabScroll.BorderSizePixel = 0
+    TabScroll.ScrollBarThickness = 6
+    TabScroll.ScrollBarImageColor3 = COLORS.Primary
+    TabScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+    TabScroll.Parent = TabContainer
+    Window.TabScroll = TabScroll
+    
+    local TabLayout = Instance.new("UIListLayout")
+    TabLayout.Padding = UDim.new(0, 5)
+    TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    TabLayout.Parent = TabScroll
+    
+    TabLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        TabScroll.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y + 10)
+    end)
+    
+    -- Dragging functionality
+    local function onDragStart(input)
+        Window.Dragging = true
+        Window.DragStart = input.Position
+        Window.StartPos = MainFrame.Position
     end
     
-    return window
+    local function onDragEnd()
+        Window.Dragging = false
+    end
+    
+    local function onDrag(input)
+        if Window.Dragging then
+            local delta = input.Position - Window.DragStart
+            MainFrame.Position = UDim2.new(
+                Window.StartPos.X.Scale,
+                Window.StartPos.X.Offset + delta.X,
+                Window.StartPos.Y.Scale,
+                Window.StartPos.Y.Offset + delta.Y
+            )
+        end
+    end
+    
+    TitleBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            onDragStart(input)
+        end
+    end)
+    
+    UserInputService.InputChanged:Connect(onDrag)
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            onDragEnd()
+        end
+    end)
+    
+    -- Window methods
+    function Window:CreateTab(name, icon)
+        local TabInstance = {
+            Name = name,
+            Icon = icon,
+            Active = false,
+            Elements = {},
+            Window = self
+        }
+        
+        -- Tab button
+        local TabButton = Instance.new("TextButton")
+        TabButton.Name = "TabButton_" .. name
+        TabButton.Size = UDim2.new(1, -10, 0, 40)
+        TabButton.BackgroundColor3 = COLORS.Background
+        TabButton.BorderSizePixel = 0
+        TabButton.Text = (icon and icon .. " " or "") .. name
+        TabButton.TextColor3 = COLORS.TextSecondary
+        TabButton.TextSize = 14
+        TabButton.Font = FONTS.Regular
+        TabButton.TextXAlignment = Enum.TextXAlignment.Left
+        TabButton.Parent = self.TabScroll
+        TabInstance.Button = TabButton
+        
+        CreateCorner(8).Parent = TabButton
+        
+        -- Tab content container
+        local TabContent = Instance.new("Frame")
+        TabContent.Name = "TabContent_" .. name
+        TabContent.Size = UDim2.new(1, 0, 1, 0)
+        TabContent.BackgroundTransparency = 1
+        TabContent.Visible = false
+        TabContent.Parent = self.ContentScroll
+        TabInstance.Content = TabContent
+        
+        -- Padding for tab button
+        local TabPadding = Instance.new("UIPadding")
+        TabPadding.PaddingLeft = UDim.new(0, 15)
+        TabPadding.Parent = TabButton
+        
+        -- Tab selection logic
+        TabButton.MouseButton1Click:Connect(function()
+            self:SelectTab(TabInstance)
+        end)
+        
+        -- Hover effect
+        TabButton.MouseEnter:Connect(function()
+            if not TabInstance.Active then
+                TweenService:Create(TabButton, ANIMATIONS.Fast, {
+                    BackgroundColor3 = COLORS.Surface
+                }):Play()
+            end
+        end)
+        
+        TabButton.MouseLeave:Connect(function()
+            if not TabInstance.Active then
+                TweenService:Create(TabButton, ANIMATIONS.Fast, {
+                    BackgroundColor3 = COLORS.Background
+                }):Play()
+            end
+        end)
+        
+        -- Add Tab methods to the tab instance
+        for methodName, method in pairs(Tab) do
+            if type(method) == "function" then
+                TabInstance[methodName] = method
+            end
+        end
+        
+        -- Select first tab by default
+        if #self.Tabs == 0 then
+            self:SelectTab(TabInstance)
+        end
+        
+        table.insert(self.Tabs, TabInstance)
+        return TabInstance
+    end
+    
+    function Window:SelectTab(tab)
+        -- Deselect current tab
+        if self.CurrentTab then
+            self.CurrentTab.Active = false
+            self.CurrentTab.Content.Visible = false
+            TweenService:Create(self.CurrentTab.Button, ANIMATIONS.Fast, {
+                BackgroundColor3 = COLORS.Background,
+                TextColor3 = COLORS.TextSecondary
+            }):Play()
+        end
+        
+        -- Select new tab
+        tab.Active = true
+        tab.Content.Visible = true
+        self.CurrentTab = tab
+        
+        TweenService:Create(tab.Button, ANIMATIONS.Fast, {
+            BackgroundColor3 = COLORS.Primary,
+            TextColor3 = COLORS.Text
+        }):Play()
+    end
+    
+    -- Entrance animation
+    MainFrame.Size = UDim2.new(0, 0, 0, 0)
+    MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    
+    TweenService:Create(MainFrame, ANIMATIONS.Bounce, {
+        Size = Window.Size,
+        Position = UDim2.new(0.5, -Window.Size.X.Offset/2, 0.5, -Window.Size.Y.Offset/2)
+    }):Play()
+    
+    return Window
 end
 
 return FischnishedUI
