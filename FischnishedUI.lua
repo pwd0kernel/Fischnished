@@ -48,10 +48,10 @@ local COLORS = {
 
 -- Typography System
 local FONTS = {
-    Regular = Enum.Font.Inter,
-    Medium = Enum.Font.InterMedium, 
-    SemiBold = Enum.Font.InterSemiBold,
-    Bold = Enum.Font.InterBold,
+    Regular = Enum.Font.Gotham,
+    Medium = Enum.Font.GothamMedium, 
+    SemiBold = Enum.Font.GothamSemibold,
+    Bold = Enum.Font.GothamBold,
     Mono = Enum.Font.RobotoMono,
 }
 
