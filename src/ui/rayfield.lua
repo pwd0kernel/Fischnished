@@ -39,8 +39,13 @@ end
 
 local Services = getServices()
 
--- Load our custom UI library - directly require the complete version
-local UI = require(script.Parent.fischnished_complete)
+-- Load our custom UI library - use global reference with multiple fallbacks
+local UI = _G.FischnishedUI or 
+           (_G.Fischnished and _G.Fischnished.ui and _G.Fischnished.ui.fischnished_complete)
+
+if not UI then
+    error("FischnishedUI library not found! Make sure fischnished_complete.lua is loaded first.")
+end
 
 function FischnishedUI.initialize()
     print("🎨 Initializing FischnishedUI - Custom UI System")

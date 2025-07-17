@@ -1215,4 +1215,7 @@ function FischnishedUI.toggleWindow()
     end
 end
 
+-- Store globally for easy access
+_G.FischnishedUI = FischnishedUI
+
 return FischnishedUI
