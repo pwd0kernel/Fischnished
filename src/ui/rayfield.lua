@@ -1,81 +1,117 @@
--- Rayfield UI Module
--- Handles all UI creation and management
+-- FischnishedUI - Custom UI Library Implementation
+-- Replaces Rayfield with our own superior UI system
 -- Part of Fischnished Cheat by Buffer_0verflow
 
-local RayfieldUI = {}
-local Services = _G.Fischnished.core.services
+local FischnishedUI = {}
 
-function RayfieldUI.initialize()
-    local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+-- Get services safely (might be called before services module is loaded)
+local function getServices()
+    if _G.Fischnished and _G.Fischnished.core and _G.Fischnished.core.services then
+        return _G.Fischnished.core.services
+    end
+    
+    -- Fallback services if core module not loaded yet
+    return {
+        safePcall = function(func) 
+            local success, result = pcall(func)
+            if not success then
+                warn("SafePcall error: " .. tostring(result))
+            end
+            return success, result
+        end,
+        cleanup = function() end,
+        State = {
+            enabledFlags = {},
+            playerESPHighlights = {},
+            speedValue = 100,
+            flySpeedValue = 50
+        },
+        Players = game:GetService("Players"),
+        LocalPlayer = game:GetService("Players").LocalPlayer,
+        RunService = game:GetService("RunService"),
+        GuiService = game:GetService("GuiService"),
+        getHumanoid = function()
+            local char = game:GetService("Players").LocalPlayer.Character
+            return char and char:FindFirstChild("Humanoid")
+        end
+    }
+end
 
-    local Window = Rayfield:CreateWindow({
+local Services = getServices()
+
+-- Load our custom UI library - directly require the complete version
+local UI = require(script.Parent.fischnished_complete)
+
+function FischnishedUI.initialize()
+    print("🎨 Initializing FischnishedUI - Custom UI System")
+    
+    -- Setup key system
+    local keySystemAuthenticated = UI.setupKeySystem({
+        enabled = true,
+        title = "Fischnished Premium",
+        subtitle = "Enter your license key",
+        note = "Purchase a key from our Discord server: discord.gg/Tesm6dDcDC",
+        keys = {
+            "FSH-7K9M-X3QR-BVNP-2L8D-YE4C",
+            "FSH-9P6W-M2ZX-QRTN-5K8J-VL3F",
+            "FSH-4N7B-R8QM-XZPW-3L9K-YE6D",
+            "FSH-2X5Q-MVNR-ZWPK-8J4L-BF7C",
+            "FSH-6K9P-BXZM-QRWL-5N8J-VE3D",
+            "FSH-3M7Q-XZNR-BVPW-9K2L-YF4C",
+            "FSH-8P5N-MZXQ-BRLW-6K9J-VE7D",
+            "FSH-4X7Q-NVZM-PRWK-2L8J-BF5C",
+            "FSH-9M6K-XZQR-BVNW-5P8L-YE3D",
+            "FSH-7Q2N-MXZR-BVPK-8J5L-WF4C",
+            "FSH-5K8P-NZXQ-MRVW-3L9J-BE6D",
+            "FSH-2N7M-XZQR-BVPK-6J8L-YF5C",
+            "FSH-8X4Q-MZNR-BVWP-9K2L-VE7D",
+            "FSH-6P9N-XZQM-BRLW-5K8J-YF3C",
+            "FSH-3M8K-NZXR-BVPW-7Q2L-VE4D"
+        },
+        saveKey = true,
+        fileName = "FischnishedKey"
+    })
+    
+    if not keySystemAuthenticated then
+        warn("Key system authentication failed!")
+        return
+    end
+    
+    -- Create main window
+    local Window = UI.createWindow({
         Name = "Fischnished - Fisch Cheat (1.0.0)",
         LoadingTitle = "Loading Fischnished...",
-        LoadingSubtitle = "by Buffer_0verflow",
-        ConfigurationSaving = {
-            Enabled = false,
-            FolderName = nil,
-            FileName = "FischnishedConfig"
-        },
-        Discord = {
-            Enabled = true,
-            Invite = "Tesm6dDcDC",
-            RememberJoins = true
-        },
-        KeySystem = true,
-        KeySettings = {
-            Title = "Fischnished Premium",
-            Subtitle = "Enter your license key",
-            Note = "Purchase a key from our Discord server: discord.gg/Tesm6dDcDC",
-            FileName = "FischnishedKey",
-            SaveKey = true,
-            GrabKeyFromSite = false,
-            Key = {
-                "FSH-7K9M-X3QR-BVNP-2L8D-YE4C",
-                "FSH-9P6W-M2ZX-QRTN-5K8J-VL3F",
-                "FSH-4N7B-R8QM-XZPW-3L9K-YE6D",
-                "FSH-2X5Q-MVNR-ZWPK-8J4L-BF7C",
-                "FSH-6K9P-BXZM-QRWL-5N8J-VE3D",
-                "FSH-3M7Q-XZNR-BVPW-9K2L-YF4C",
-                "FSH-8P5N-MZXQ-BRLW-6K9J-VE7D",
-                "FSH-4X7Q-NVZM-PRWK-2L8J-BF5C",
-                "FSH-9M6K-XZQR-BVNW-5P8L-YE3D",
-                "FSH-7Q2N-MXZR-BVPK-8J5L-WF4C",
-                "FSH-5K8P-NZXQ-MRVW-3L9J-BE6D",
-                "FSH-2N7M-XZQR-BVPK-6J8L-YF5C",
-                "FSH-8X4Q-MZNR-BVWP-9K2L-VE7D",
-                "FSH-6P9N-XZQM-BRLW-5K8J-YF3C",
-                "FSH-3M8K-NZXR-BVPW-7Q2L-VE4D"
-            }
-        }
+        LoadingSubtitle = "by Buffer_0verflow"
     })
 
-    -- Store references
-    _G.Fischnished.UI.Rayfield = Rayfield
+    -- Store references for compatibility
+    _G.Fischnished.UI = _G.Fischnished.UI or {}
+    _G.Fischnished.UI.FischnishedUI = UI
     _G.Fischnished.UI.Window = Window
     _G.Fischnished.UI.Tabs = {}
 
     -- Create all tabs
-    RayfieldUI.createTabs()
+    FischnishedUI.createTabs()
     
     -- Setup event connections
-    RayfieldUI.setupConnections()
+    FischnishedUI.setupConnections()
     
-    print("✅ Rayfield UI initialized successfully")
+    UI.createNotification("Success", "FischnishedUI loaded successfully! 🎮", "success", 3)
+    print("✅ FischnishedUI initialized successfully")
 end
 
-function RayfieldUI.createTabs()
+function FischnishedUI.createTabs()
     local Window = _G.Fischnished.UI.Window
     
-    -- Create tabs
-    _G.Fischnished.UI.Tabs.Hacks = Window:CreateTab("Hacks", nil)
-    _G.Fischnished.UI.Tabs.Movement = Window:CreateTab("Movement", nil)
-    _G.Fischnished.UI.Tabs.Teleports = Window:CreateTab("Teleports", nil)
-    _G.Fischnished.UI.Tabs.Treasure = Window:CreateTab("Treasure", nil)
-    _G.Fischnished.UI.Tabs.Crates = Window:CreateTab("Crates", nil)
-    _G.Fischnished.UI.Tabs.Codes = Window:CreateTab("Creator Codes", nil)
-    _G.Fischnished.UI.Tabs.Visuals = Window:CreateTab("Visuals", nil)
-    _G.Fischnished.UI.Tabs.Misc = Window:CreateTab("Misc", nil)
+    -- Create tabs with modern icons
+    _G.Fischnished.UI.Tabs.Hacks = UI.createTab("Hacks", "⚡")
+    _G.Fischnished.UI.Tabs.Movement = UI.createTab("Movement", "🚀")
+    _G.Fischnished.UI.Tabs.Teleports = UI.createTab("Teleports", "🌐")
+    _G.Fischnished.UI.Tabs.Treasure = UI.createTab("Treasure", "💎")
+    _G.Fischnished.UI.Tabs.Crates = UI.createTab("Crates", "📦")
+    _G.Fischnished.UI.Tabs.Codes = UI.createTab("Creator Codes", "🏷️")
+    _G.Fischnished.UI.Tabs.Visuals = UI.createTab("Visuals", "👁️")
+    _G.Fischnished.UI.Tabs.Misc = UI.createTab("Misc", "⚙️")
     
     -- Initialize feature UIs
     if _G.Fischnished.features then
@@ -103,40 +139,69 @@ function RayfieldUI.createTabs()
     end
     
     -- Create misc tab content
-    RayfieldUI.createMiscTab()
+    FischnishedUI.createMiscTab()
 end
 
-function RayfieldUI.createMiscTab()
+function FischnishedUI.createMiscTab()
     local MiscTab = _G.Fischnished.UI.Tabs.Misc
     
-    MiscTab:CreateParagraph({
+    MiscTab.CreateParagraph({
         Title = "Credits", 
-        Content = "Developed by Buffer_0verflow\n\nRestructured for GitHub distribution.\nModular design for better maintenance.\n\nVersion: 1.0.0"
+        Content = "Developed by Buffer_0verflow\n\nRestructured for GitHub distribution.\nModular design for better maintenance.\n\nNow featuring FischnishedUI - our custom UI library!\n\nVersion: 1.0.0"
     })
 
-    MiscTab:CreateButton({
+    MiscTab.CreateButton({
         Name = "📱 Join Discord Server",
         Callback = function()
-            RayfieldUI.openDiscord()
+            FischnishedUI.openDiscord()
         end,
     })
 
-    MiscTab:CreateButton({
+    MiscTab.CreateButton({
         Name = "📋 Copy Discord Link",
         Callback = function()
-            RayfieldUI.copyDiscordLink()
+            FischnishedUI.copyDiscordLink()
         end,
     })
 
-    MiscTab:CreateButton({
+    MiscTab.CreateButton({
+        Name = "🎨 Toggle Theme",
+        Callback = function()
+            FischnishedUI.toggleTheme()
+        end,
+    })
+
+    MiscTab.CreateButton({
         Name = "Exit GUI",
         Callback = function()
-            RayfieldUI.exitGUI()
+            FischnishedUI.exitGUI()
         end,
     })
 end
 
-function RayfieldUI.openDiscord()
+function FischnishedUI.toggleTheme()
+    local themes = {"Dark", "Light", "Ocean", "Sunset"}
+    local currentTheme = UI.CONFIG.THEME
+    local currentIndex = 1
+    
+    for i, theme in ipairs(themes) do
+        if theme == currentTheme then
+            currentIndex = i
+            break
+        end
+    end
+    
+    local nextIndex = (currentIndex % #themes) + 1
+    local newTheme = themes[nextIndex]
+    
+    UI.CONFIG.THEME = newTheme
+    UI.createNotification("Theme Changed", "Switched to " .. newTheme .. " theme!", "success", 2)
+    
+    -- Note: In a full implementation, you'd refresh the UI here
+    print("🎨 Theme changed to: " .. newTheme)
+end
+
+function FischnishedUI.openDiscord()
     Services.safePcall(function()
         local success = false
         
@@ -162,16 +227,16 @@ function RayfieldUI.openDiscord()
             print("💬 Copy this link to join our Discord!")
         end
         
-        RayfieldUI.createNotification("Discord", "Link copied to clipboard!\nhttps://discord.gg/Tesm6dDcDC")
+        FischnishedUI.createNotification("Discord", "Link copied to clipboard!\nhttps://discord.gg/Tesm6dDcDC")
     end)
 end
 
-function RayfieldUI.copyDiscordLink()
+function FischnishedUI.copyDiscordLink()
     Services.safePcall(function()
         if setclipboard then
             setclipboard("https://discord.gg/Tesm6dDcDC")
             print("✅ Discord link copied to clipboard: https://discord.gg/Tesm6dDcDC")
-            RayfieldUI.createNotification("Success", "Discord Link Copied!")
+            FischnishedUI.createNotification("Success", "Discord Link Copied!")
         else
             print("📋 Discord Server: https://discord.gg/Tesm6dDcDC")
             print("⚠️ Clipboard not available - copy manually")
@@ -179,77 +244,19 @@ function RayfieldUI.copyDiscordLink()
     end)
 end
 
-function RayfieldUI.createNotification(title, message)
-    Services.safePcall(function()
-        if Services.LocalPlayer and Services.LocalPlayer.PlayerGui then
-            local gui = Instance.new("ScreenGui")
-            gui.Parent = Services.LocalPlayer.PlayerGui
-            
-            local frame = Instance.new("Frame")
-            frame.Size = UDim2.new(0, 300, 0, 100)
-            frame.Position = UDim2.new(0.5, -150, 0.1, 0)
-            frame.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
-            frame.BorderSizePixel = 0
-            frame.Parent = gui
-            
-            local corner = Instance.new("UICorner")
-            corner.CornerRadius = UDim.new(0, 10)
-            corner.Parent = frame
-            
-            local titleLabel = Instance.new("TextLabel")
-            titleLabel.Size = UDim2.new(1, 0, 0.4, 0)
-            titleLabel.Position = UDim2.new(0, 0, 0, 0)
-            titleLabel.BackgroundTransparency = 1
-            titleLabel.Text = "🎮 " .. title
-            titleLabel.TextColor3 = Color3.new(1, 1, 1)
-            titleLabel.TextScaled = true
-            titleLabel.Font = Enum.Font.SourceSansBold
-            titleLabel.Parent = frame
-            
-            local descLabel = Instance.new("TextLabel")
-            descLabel.Size = UDim2.new(1, 0, 0.6, 0)
-            descLabel.Position = UDim2.new(0, 0, 0.4, 0)
-            descLabel.BackgroundTransparency = 1
-            descLabel.Text = message
-            descLabel.TextColor3 = Color3.new(1, 1, 1)
-            descLabel.TextScaled = true
-            descLabel.Font = Enum.Font.SourceSans
-            descLabel.Parent = frame
-            
-            -- Auto-destroy notification after 3 seconds
-            Services.Debris:AddItem(gui, 3)
-            
-            -- Animate notification
-            frame:TweenPosition(
-                UDim2.new(0.5, -150, 0.05, 0),
-                "Out",
-                "Quad",
-                0.5,
-                true
-            )
-            
-            task.wait(2.5)
-            frame:TweenPosition(
-                UDim2.new(0.5, -150, -0.2, 0),
-                "In",
-                "Quad",
-                0.5,
-                true
-            )
-        end
-    end)
+function FischnishedUI.createNotification(title, message, type, duration)
+    -- Use our custom notification system
+    UI.createNotification(title, message, type, duration)
 end
 
-function RayfieldUI.exitGUI()
+function FischnishedUI.exitGUI()
     print("🚪 Exiting Fischnished...")
     
     -- Cleanup all features
     Services.cleanup()
     
     -- Destroy UI
-    if _G.Fischnished.UI.Rayfield then
-        _G.Fischnished.UI.Rayfield:Destroy()
-    end
+    UI.destroyWindow()
     
     -- Clear global
     _G.FischnishedLoaded = false
@@ -258,7 +265,7 @@ function RayfieldUI.exitGUI()
     print("✅ Fischnished exited successfully")
 end
 
-function RayfieldUI.setupConnections()
+function FischnishedUI.setupConnections()
     -- ESP update connections
     Services.Players.PlayerAdded:Connect(function(player)
         if Services.State.enabledFlags["PlayerESP"] and _G.Fischnished.features.esp then
@@ -311,4 +318,4 @@ function RayfieldUI.setupConnections()
     end)
 end
 
-return RayfieldUI
+return FischnishedUI
