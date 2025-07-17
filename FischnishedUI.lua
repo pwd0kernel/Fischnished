@@ -39,8 +39,9 @@ local COLORS = {
 }
 
 local FONTS = {
-    Regular = Enum.Font.GothamMedium,
+    Regular = Enum.Font.Gotham,
     Bold = Enum.Font.GothamBold,
+    Medium = Enum.Font.GothamMedium,
     Light = Enum.Font.Gotham,
     Mono = Enum.Font.RobotoMono,
 }
@@ -75,17 +76,16 @@ local function CreateGradient(colorSequence, rotation)
     return gradient
 end
 
-local function CreateShadow(parent, size, position, color, transparency)
+local function CreateShadow(radius, transparency)
     local shadow = Instance.new("Frame")
     shadow.Name = "Shadow"
-    shadow.Size = size or UDim2.new(1, 8, 1, 8)
-    shadow.Position = position or UDim2.new(0, -4, 0, -4)
-    shadow.BackgroundColor3 = color or Color3.fromRGB(0, 0, 0)
-    shadow.BackgroundTransparency = transparency or 0.9
+    shadow.Size = UDim2.new(1, radius * 2, 1, radius * 2)
+    shadow.Position = UDim2.new(0, -radius, 0, -radius)
+    shadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    shadow.BackgroundTransparency = transparency or 0.8
     shadow.BorderSizePixel = 0
-    shadow.ZIndex = parent.ZIndex - 1
-    CreateCorner(8).Parent = shadow
-    shadow.Parent = parent.Parent
+    shadow.ZIndex = -1
+    CreateCorner(radius or 8).Parent = shadow
     return shadow
 end
 
@@ -388,7 +388,8 @@ function Tab:CreateSlider(config)
     SliderButton.Parent = SliderFill
     
     CreateCorner(6).Parent = SliderButton
-    CreateShadow(2, 0.6).Parent = SliderButton
+    local shadow = CreateShadow(2, 0.6)
+    shadow.Parent = SliderButton
     
     local dragging = false
     local range = config.Range or {0, 100}
@@ -523,7 +524,8 @@ function Tab:CreateDropdown(config)
     
     CreateCorner(4).Parent = OptionsContainer
     CreateStroke(1, COLORS.Border).Parent = OptionsContainer
-    CreateShadow(4, 0.8).Parent = OptionsContainer
+    local shadow = CreateShadow(4, 0.8)
+    shadow.Parent = OptionsContainer
     
     local OptionsLayout = Instance.new("UIListLayout")
     OptionsLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -814,7 +816,8 @@ function FischnishedUI:CreateWindow(config)
     
     CreateCorner(12).Parent = MainFrame
     CreateStroke(1, COLORS.Border).Parent = MainFrame
-    CreateShadow(6, 0.4).Parent = MainFrame
+    local shadow = CreateShadow(6, 0.4)
+    shadow.Parent = MainFrame
     
     -- Title bar
     local TitleBar = Instance.new("Frame")
@@ -933,38 +936,29 @@ function FischnishedUI:CreateWindow(config)
     -- Content area
     local ContentArea = Instance.new("Frame")
     ContentArea.Name = "ContentArea"
-    ContentArea.Size = UDim2.new(1, -180, 1, -60)
-    ContentArea.Position = UDim2.new(0, 170, 0, 60)
+    ContentArea.Size = UDim2.new(1, -160, 1, -54)
+    ContentArea.Position = UDim2.new(0, 154, 0, 50)
     ContentArea.BackgroundColor3 = COLORS.Surface
     ContentArea.BorderSizePixel = 0
     ContentArea.Parent = MainFrame
     Window.ContentArea = ContentArea
     
-    CreateCorner(12).Parent = ContentArea
+    CreateCorner(8).Parent = ContentArea
+    CreateStroke(1, COLORS.Border).Parent = ContentArea
     
     -- Add scrolling to content
     local ContentScroll = Instance.new("ScrollingFrame")
     ContentScroll.Name = "ContentScroll"
-    ContentScroll.Size = UDim2.new(1, -20, 1, -20)
-    ContentScroll.Position = UDim2.new(0, 10, 0, 10)
+    ContentScroll.Size = UDim2.new(1, -16, 1, -16)
+    ContentScroll.Position = UDim2.new(0, 8, 0, 8)
     ContentScroll.BackgroundTransparency = 1
     ContentScroll.BorderSizePixel = 0
-    ContentScroll.ScrollBarThickness = 8
+    ContentScroll.ScrollBarThickness = 6
     ContentScroll.ScrollBarImageColor3 = COLORS.Primary
+    ContentScroll.ScrollBarImageTransparency = 0.5
     ContentScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
     ContentScroll.Parent = ContentArea
     Window.ContentScroll = ContentScroll
-    
-    -- Layout for content
-    local ContentLayout = Instance.new("UIListLayout")
-    ContentLayout.Padding = UDim.new(0, 10)
-    ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    ContentLayout.Parent = ContentScroll
-    
-    -- Auto-resize content
-    ContentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        ContentScroll.CanvasSize = UDim2.new(0, 0, 0, ContentLayout.AbsoluteContentSize.Y + 20)
-    end)
     
     -- Tab scrolling
     local TabScroll = Instance.new("ScrollingFrame")
@@ -1053,11 +1047,37 @@ function FischnishedUI:CreateWindow(config)
         -- Tab content container
         local TabContent = Instance.new("Frame")
         TabContent.Name = "TabContent_" .. name
-        TabContent.Size = UDim2.new(1, 0, 1, 0)
+        TabContent.Size = UDim2.new(1, 0, 0, 1)
         TabContent.BackgroundTransparency = 1
         TabContent.Visible = false
         TabContent.Parent = self.ContentScroll
         TabInstance.Content = TabContent
+        
+        -- Layout for tab content
+        local TabContentLayout = Instance.new("UIListLayout")
+        TabContentLayout.Padding = UDim.new(0, 8)
+        TabContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        TabContentLayout.Parent = TabContent
+        
+        -- Auto-resize tab content based on children
+        local function updateContentSize()
+            local totalHeight = TabContentLayout.AbsoluteContentSize.Y
+            TabContent.Size = UDim2.new(1, 0, 0, math.max(totalHeight + 16, 1))
+            
+            -- Update the overall scroll canvas
+            local maxHeight = 0
+            for _, child in pairs(self.ContentScroll:GetChildren()) do
+                if child:IsA("Frame") and child.Visible then
+                    maxHeight = math.max(maxHeight, child.Size.Y.Offset)
+                end
+            end
+            self.ContentScroll.CanvasSize = UDim2.new(0, 0, 0, maxHeight + 32)
+        end
+        
+        TabContentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(updateContentSize)
+        
+        -- Store the update function for later use
+        TabInstance.UpdateSize = updateContentSize
         
         -- Padding for tab button
         local TabPadding = Instance.new("UIPadding")
@@ -1095,7 +1115,10 @@ function FischnishedUI:CreateWindow(config)
         
         -- Select first tab by default
         if #self.Tabs == 0 then
-            self:SelectTab(TabInstance)
+            spawn(function()
+                wait(0.1) -- Wait a frame for the tab to be fully created
+                self:SelectTab(TabInstance)
+            end)
         end
         
         table.insert(self.Tabs, TabInstance)
@@ -1103,11 +1126,11 @@ function FischnishedUI:CreateWindow(config)
     end
     
     function Window:SelectTab(tab)
-        -- Deselect current tab
-        if self.CurrentTab then
-            self.CurrentTab.Active = false
-            self.CurrentTab.Content.Visible = false
-            TweenService:Create(self.CurrentTab.Button, ANIMATIONS.Fast, {
+        -- Deselect all tabs first
+        for _, existingTab in pairs(self.Tabs) do
+            existingTab.Active = false
+            existingTab.Content.Visible = false
+            TweenService:Create(existingTab.Button, ANIMATIONS.Fast, {
                 BackgroundColor3 = COLORS.Background,
                 TextColor3 = COLORS.TextSecondary
             }):Play()
@@ -1117,6 +1140,11 @@ function FischnishedUI:CreateWindow(config)
         tab.Active = true
         tab.Content.Visible = true
         self.CurrentTab = tab
+        
+        -- Update scroll canvas size for the active tab
+        if tab.UpdateSize then
+            tab.UpdateSize()
+        end
         
         TweenService:Create(tab.Button, ANIMATIONS.Fast, {
             BackgroundColor3 = COLORS.Primary,
