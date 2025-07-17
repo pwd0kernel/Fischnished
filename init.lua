@@ -5,7 +5,7 @@
 
 -- For local testing, we'll load directly from the file system
 -- When uploading to GitHub, change USE_LOCAL_FILES to false
-local USE_LOCAL_FILES = true -- Set to false for GitHub distribution
+local USE_LOCAL_FILES = false -- Set to false for GitHub distribution
 
 local HttpService = game:GetService("HttpService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -14,7 +14,7 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CONFIG = {
     VERSION = "1.0.0",
     DISCORD = "Tesm6dDcDC",
-    GITHUB_BASE = "https://raw.githubusercontent.com/pwd0kernel/Fischnished/main/",
+    GITHUB_BASE = "https://raw.githubusercontent.com/yourusername/fischnished-cheat/main/",
     
     -- File loading order (dependencies first)
     FILES = {
