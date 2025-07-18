@@ -153,7 +153,12 @@ end
 local function CreateRipple(parent, color)
     local ripple = Instance.new("Frame")
     ripple.Name = "Ripple"
-    ripple.BackgroundColor3 = color or COLORS.Primary
+    -- Ensure color is a Color3, not UDim2 or other type
+    local rippleColor = COLORS.Primary
+    if color and typeof(color) == "Color3" then
+        rippleColor = color
+    end
+    ripple.BackgroundColor3 = rippleColor
     ripple.BackgroundTransparency = 0.8
     ripple.BorderSizePixel = 0
     ripple.Size = UDim2.new(0, 0, 0, 0)
