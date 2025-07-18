@@ -11,39 +11,45 @@ local Players = game:GetService("Players")
 local FischnishedUI = {}
 FischnishedUI.__index = FischnishedUI
 
--- Modern Minimalist Color Palette
+-- Ultra-Modern Premium Color Palette
 local COLORS = {
-    -- Primary Colors
-    Primary = Color3.fromRGB(99, 102, 241),       -- Modern Indigo
-    PrimaryDark = Color3.fromRGB(79, 70, 229),    -- Darker Primary
-    PrimaryLight = Color3.fromRGB(129, 140, 248), -- Lighter Primary
+    -- Primary Colors - Enhanced Gradient System
+    Primary = Color3.fromRGB(139, 92, 246),       -- Premium Violet
+    PrimaryDark = Color3.fromRGB(109, 40, 217),   -- Deep Violet
+    PrimaryLight = Color3.fromRGB(167, 139, 250), -- Light Violet
+    PrimaryGlow = Color3.fromRGB(196, 181, 253),  -- Glow Effect
     
-    -- Background System
-    Background = Color3.fromRGB(9, 9, 11),        -- Pure Dark
-    Surface = Color3.fromRGB(15, 15, 17),         -- Elevated Surface
-    SurfaceHover = Color3.fromRGB(20, 20, 24),    -- Hover State
-    SurfaceActive = Color3.fromRGB(25, 25, 29),   -- Active State
+    -- Background System - Sophisticated Depth
+    Background = Color3.fromRGB(2, 6, 23),        -- Deep Navy
+    Surface = Color3.fromRGB(15, 23, 42),         -- Elevated Surface
+    SurfaceHover = Color3.fromRGB(30, 41, 59),    -- Hover State
+    SurfaceActive = Color3.fromRGB(45, 55, 72),   -- Active State
+    SurfaceElevated = Color3.fromRGB(51, 65, 85), -- High Elevation
     
-    -- Text Hierarchy
-    TextPrimary = Color3.fromRGB(255, 255, 255),  -- High Emphasis
-    TextSecondary = Color3.fromRGB(161, 161, 170), -- Medium Emphasis  
-    TextTertiary = Color3.fromRGB(113, 113, 122), -- Low Emphasis
-    TextDisabled = Color3.fromRGB(82, 82, 91),    -- Disabled
+    -- Text Hierarchy - Enhanced Contrast
+    TextPrimary = Color3.fromRGB(248, 250, 252),  -- Pure White
+    TextSecondary = Color3.fromRGB(203, 213, 225), -- Light Gray
+    TextTertiary = Color3.fromRGB(148, 163, 184), -- Medium Gray
+    TextDisabled = Color3.fromRGB(100, 116, 139), -- Disabled
+    TextMuted = Color3.fromRGB(71, 85, 105),      -- Muted
     
-    -- State Colors
-    Success = Color3.fromRGB(34, 197, 94),        -- Green
-    Warning = Color3.fromRGB(251, 191, 36),       -- Amber
-    Error = Color3.fromRGB(239, 68, 68),          -- Red
+    -- State Colors - Vibrant & Modern
+    Success = Color3.fromRGB(16, 185, 129),       -- Emerald
+    Warning = Color3.fromRGB(245, 158, 11),       -- Amber
+    Error = Color3.fromRGB(239, 68, 68),          -- Rose
     Info = Color3.fromRGB(59, 130, 246),          -- Blue
     
-    -- Border System
-    Border = Color3.fromRGB(39, 39, 42),          -- Subtle Border
-    BorderHover = Color3.fromRGB(63, 63, 70),     -- Hover Border
-    BorderFocus = Color3.fromRGB(99, 102, 241),   -- Focus Border
+    -- Border System - Refined Hierarchy
+    Border = Color3.fromRGB(51, 65, 85),          -- Subtle Border
+    BorderHover = Color3.fromRGB(71, 85, 105),    -- Hover Border
+    BorderFocus = Color3.fromRGB(139, 92, 246),   -- Focus Border
+    BorderActive = Color3.fromRGB(167, 139, 250), -- Active Border
     
-    -- Special
-    Accent = Color3.fromRGB(168, 85, 247),        -- Purple Accent
-    Glass = Color3.fromRGB(255, 255, 255),        -- For glass effects
+    -- Special Effects
+    Accent = Color3.fromRGB(236, 72, 153),        -- Pink Accent
+    Glass = Color3.fromRGB(255, 255, 255),        -- Glass Effect
+    Shadow = Color3.fromRGB(0, 0, 0),             -- Shadow
+    Overlay = Color3.fromRGB(0, 0, 0),            -- Overlay
 }
 
 -- Typography System
@@ -55,32 +61,40 @@ local FONTS = {
     Mono = Enum.Font.RobotoMono,
 }
 
--- Motion System
+-- Enhanced Motion System with Premium Animations
 local MOTION = {
-    Fast = TweenInfo.new(0.15, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-    Medium = TweenInfo.new(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-    Slow = TweenInfo.new(0.35, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-    Spring = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, false, 0, 1.2),
-    Bounce = TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, false, 0, 1.1),
+    Instant = TweenInfo.new(0.08, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+    Fast = TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+    Medium = TweenInfo.new(0.35, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+    Slow = TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+    Spring = TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, false, 0, 1.4),
+    Bounce = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, false, 0, 1.2),
+    Smooth = TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
+    Elastic = TweenInfo.new(0.8, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out),
 }
 
--- Spacing System
+-- Enhanced Spacing System
 local SPACING = {
-    XS = 4,   -- 4px
-    SM = 8,   -- 8px  
-    MD = 12,  -- 12px
-    LG = 16,  -- 16px
-    XL = 20,  -- 20px
-    XXL = 24, -- 24px
+    XXS = 2,  -- 2px - Micro spacing
+    XS = 4,   -- 4px - Extra small
+    SM = 8,   -- 8px - Small
+    MD = 12,  -- 12px - Medium
+    LG = 16,  -- 16px - Large
+    XL = 24,  -- 24px - Extra large
+    XXL = 32, -- 32px - Extra extra large
+    XXXL = 48, -- 48px - Massive spacing
 }
 
--- Border Radius System
+-- Enhanced Border Radius System
 local RADIUS = {
-    SM = 4,   -- Small radius
-    MD = 6,   -- Medium radius
-    LG = 8,   -- Large radius
-    XL = 12,  -- Extra large radius
-    XXL = 16, -- Component radius
+    NONE = 0,   -- No radius
+    XS = 2,     -- Extra small
+    SM = 4,     -- Small radius
+    MD = 8,     -- Medium radius
+    LG = 12,    -- Large radius
+    XL = 16,    -- Extra large radius
+    XXL = 24,   -- Component radius
+    XXXL = 32,  -- Large component radius
     FULL = 999, -- Fully rounded
 }
 
@@ -109,19 +123,60 @@ local function CreateGradient(colors, rotation, transparency)
     return gradient
 end
 
-local function CreateShadow(blur, transparency)
+local function CreateShadow(blur, transparency, color)
     local shadow = Instance.new("ImageLabel")
     shadow.Name = "DropShadow"
     shadow.BackgroundTransparency = 1
     shadow.Image = "rbxasset://textures/ui/Controls/DropShadow.png"
-    shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    shadow.ImageTransparency = transparency or 0.7
+    shadow.ImageColor3 = color or COLORS.Shadow
+    shadow.ImageTransparency = transparency or 0.8
     shadow.ScaleType = Enum.ScaleType.Slice
     shadow.SliceCenter = Rect.new(49, 49, 450, 450)
     shadow.Size = UDim2.new(1, blur * 2, 1, blur * 2)
     shadow.Position = UDim2.new(0, -blur, 0, -blur)
     shadow.ZIndex = -1
     return shadow
+end
+
+local function CreateGlow(color, intensity)
+    local glow = Instance.new("ImageLabel")
+    glow.Name = "Glow"
+    glow.BackgroundTransparency = 1
+    glow.Image = "rbxasset://textures/ui/Controls/DropShadow.png"
+    glow.ImageColor3 = color or COLORS.Primary
+    glow.ImageTransparency = 1 - (intensity or 0.3)
+    glow.ScaleType = Enum.ScaleType.Slice
+    glow.SliceCenter = Rect.new(49, 49, 450, 450)
+    glow.Size = UDim2.new(1, 20, 1, 20)
+    glow.Position = UDim2.new(0, -10, 0, -10)
+    glow.ZIndex = -2
+    return glow
+end
+
+local function CreateGradientBackground(parent, colors, rotation)
+    local gradient = Instance.new("Frame")
+    gradient.Name = "GradientBackground"
+    gradient.Size = UDim2.new(1, 0, 1, 0)
+    gradient.BackgroundColor3 = colors[1] or COLORS.Primary
+    gradient.BorderSizePixel = 0
+    gradient.Parent = parent
+    
+    local uiGradient = Instance.new("UIGradient")
+    uiGradient.Color = ColorSequence.new(colors)
+    uiGradient.Rotation = rotation or 45
+    uiGradient.Parent = gradient
+    
+    return gradient
+end
+
+local function CreateBlur(intensity)
+    local blur = Instance.new("Frame")
+    blur.Name = "BlurEffect"
+    blur.Size = UDim2.new(1, 0, 1, 0)
+    blur.BackgroundColor3 = COLORS.Glass
+    blur.BackgroundTransparency = 1 - (intensity or 0.1)
+    blur.BorderSizePixel = 0
+    return blur
 end
 
 local function CreatePadding(all, left, right, top, bottom)
@@ -159,25 +214,42 @@ local function CreateRipple(parent, color)
         rippleColor = color
     end
     ripple.BackgroundColor3 = rippleColor
-    ripple.BackgroundTransparency = 0.8
+    ripple.BackgroundTransparency = 0.7
     ripple.BorderSizePixel = 0
     ripple.Size = UDim2.new(0, 0, 0, 0)
     ripple.Position = UDim2.new(0.5, 0, 0.5, 0)
     ripple.AnchorPoint = Vector2.new(0.5, 0.5)
-    ripple.ZIndex = parent.ZIndex + 1
+    ripple.ZIndex = parent.ZIndex + 5
     ripple.Parent = parent
     
     CreateCorner(RADIUS.FULL).Parent = ripple
     
-    -- Animate ripple
+    -- Enhanced ripple animation with glow effect
+    local glowRipple = ripple:Clone()
+    glowRipple.Name = "GlowRipple"
+    glowRipple.BackgroundTransparency = 0.9
+    glowRipple.Size = UDim2.new(0, 10, 0, 10)
+    glowRipple.ZIndex = parent.ZIndex + 4
+    glowRipple.Parent = parent
+    
+    -- Animate main ripple
     TweenService:Create(ripple, MOTION.Fast, {
+        Size = UDim2.new(1, 0, 1, 0),
+        BackgroundTransparency = 1
+    }):Play()
+    
+    -- Animate glow ripple
+    TweenService:Create(glowRipple, MOTION.Medium, {
         Size = UDim2.new(1, 20, 1, 20),
         BackgroundTransparency = 1
     }):Play()
     
     spawn(function()
-        wait(0.3)
+        wait(0.4)
         ripple:Destroy()
+        if glowRipple and glowRipple.Parent then
+            glowRipple:Destroy()
+        end
     end)
     
     return ripple
@@ -213,14 +285,14 @@ end
 function Tab:CreateButton(config)
     local ButtonFrame = Instance.new("Frame")
     ButtonFrame.Name = "ButtonFrame_" .. (config.Name or "Button")
-    ButtonFrame.Size = UDim2.new(1, 0, 0, 40)
+    ButtonFrame.Size = UDim2.new(1, 0, 0, 48)
     ButtonFrame.BackgroundTransparency = 1
     ButtonFrame.Parent = self.Content
     
     local Button = Instance.new("TextButton")
     Button.Name = "Button"
-    Button.Size = UDim2.new(1, -SPACING.LG * 2, 1, 0)
-    Button.Position = UDim2.new(0, SPACING.LG, 0, 0)
+    Button.Size = UDim2.new(1, -SPACING.XL * 2, 1, 0)
+    Button.Position = UDim2.new(0, SPACING.XL, 0, 0)
     Button.BackgroundColor3 = COLORS.Surface
     Button.BorderSizePixel = 0
     Button.Text = ""
@@ -229,27 +301,46 @@ function Tab:CreateButton(config)
     
     CreateCorner(RADIUS.LG).Parent = Button
     CreateStroke(1, COLORS.Border).Parent = Button
+    CreateShadow(4, 0.9).Parent = Button
     CreatePadding(SPACING.LG).Parent = Button
     
-    -- Button text
+    -- Enhanced gradient background
+    local gradientBg = CreateGradientBackground(Button, {COLORS.Surface, COLORS.SurfaceElevated}, 135)
+    gradientBg.BackgroundTransparency = 0.8
+    CreateCorner(RADIUS.LG).Parent = gradientBg
+    
+    -- Button text with better typography
     local ButtonText = Instance.new("TextLabel")
     ButtonText.Size = UDim2.new(1, 0, 1, 0)
     ButtonText.BackgroundTransparency = 1
     ButtonText.Text = config.Name or "Button"
     ButtonText.TextColor3 = COLORS.TextPrimary
-    ButtonText.TextSize = 13
-    ButtonText.Font = FONTS.Medium
+    ButtonText.TextSize = 14
+    ButtonText.Font = FONTS.SemiBold
     ButtonText.TextXAlignment = Enum.TextXAlignment.Center
     ButtonText.TextYAlignment = Enum.TextYAlignment.Center
+    ButtonText.ZIndex = 5
     ButtonText.Parent = Button
     
-    -- Hover effects
+    -- Enhanced hover effects with glow
+    local hoverGlow = CreateGlow(COLORS.Primary, 0)
+    hoverGlow.Parent = Button
+    hoverGlow.Visible = false
+    
     Button.MouseEnter:Connect(function()
+        hoverGlow.Visible = true
         TweenService:Create(Button, MOTION.Fast, {
             BackgroundColor3 = COLORS.SurfaceHover
         }):Play()
         TweenService:Create(Button:FindFirstChild("UIStroke"), MOTION.Fast, {
-            Color = COLORS.BorderHover
+            Color = COLORS.BorderHover,
+            Thickness = 1.5
+        }):Play()
+        TweenService:Create(hoverGlow, MOTION.Fast, {
+            ImageTransparency = 0.85
+        }):Play()
+        TweenService:Create(ButtonText, MOTION.Fast, {
+            TextSize = 15
         }):Play()
     end)
     
@@ -258,20 +349,41 @@ function Tab:CreateButton(config)
             BackgroundColor3 = COLORS.Surface
         }):Play()
         TweenService:Create(Button:FindFirstChild("UIStroke"), MOTION.Fast, {
-            Color = COLORS.Border
+            Color = COLORS.Border,
+            Thickness = 1
         }):Play()
+        TweenService:Create(hoverGlow, MOTION.Fast, {
+            ImageTransparency = 1
+        }):Play()
+        TweenService:Create(ButtonText, MOTION.Fast, {
+            TextSize = 14
+        }):Play()
+        spawn(function()
+            wait(0.2)
+            if hoverGlow and hoverGlow.Parent then
+                hoverGlow.Visible = false
+            end
+        end)
     end)
     
     Button.MouseButton1Down:Connect(function()
         CreateRipple(Button, COLORS.Primary)
-        TweenService:Create(Button, MOTION.Fast, {
-            BackgroundColor3 = COLORS.SurfaceActive
+        TweenService:Create(Button, MOTION.Instant, {
+            BackgroundColor3 = COLORS.SurfaceActive,
+            Size = UDim2.new(1, -SPACING.XL * 2 - 4, 1, -4)
+        }):Play()
+        TweenService:Create(ButtonText, MOTION.Instant, {
+            TextSize = 13
         }):Play()
     end)
     
     Button.MouseButton1Up:Connect(function()
         TweenService:Create(Button, MOTION.Fast, {
-            BackgroundColor3 = COLORS.SurfaceHover
+            BackgroundColor3 = COLORS.SurfaceHover,
+            Size = UDim2.new(1, -SPACING.XL * 2, 1, 0)
+        }):Play()
+        TweenService:Create(ButtonText, MOTION.Fast, {
+            TextSize = 15
         }):Play()
     end)
     
@@ -285,68 +397,119 @@ end
 function Tab:CreateToggle(config)
     local ToggleFrame = Instance.new("Frame")
     ToggleFrame.Name = "ToggleFrame_" .. (config.Name or "Toggle")
-    ToggleFrame.Size = UDim2.new(1, 0, 0, 50)
+    ToggleFrame.Size = UDim2.new(1, 0, 0, 56)
     ToggleFrame.BackgroundColor3 = COLORS.Surface
     ToggleFrame.BorderSizePixel = 0
     ToggleFrame.Parent = self.Content
     
     CreateCorner(RADIUS.LG).Parent = ToggleFrame
     CreateStroke(1, COLORS.Border).Parent = ToggleFrame
-    CreatePadding(SPACING.LG).Parent = ToggleFrame
+    CreateShadow(4, 0.9).Parent = ToggleFrame
+    CreatePadding(SPACING.XL).Parent = ToggleFrame
+    
+    -- Enhanced gradient background
+    local gradientBg = CreateGradientBackground(ToggleFrame, {COLORS.Surface, COLORS.SurfaceElevated}, 135)
+    gradientBg.BackgroundTransparency = 0.8
+    CreateCorner(RADIUS.LG).Parent = gradientBg
     
     local ToggleButton = Instance.new("TextButton")
     ToggleButton.Size = UDim2.new(1, 0, 1, 0)
     ToggleButton.BackgroundTransparency = 1
     ToggleButton.Text = ""
+    ToggleButton.ZIndex = 5
     ToggleButton.Parent = ToggleFrame
     
     local ToggleLabel = Instance.new("TextLabel")
-    ToggleLabel.Size = UDim2.new(1, -60, 1, 0)
+    ToggleLabel.Size = UDim2.new(1, -80, 1, 0)
     ToggleLabel.BackgroundTransparency = 1
     ToggleLabel.Text = config.Name or "Toggle"
     ToggleLabel.TextColor3 = COLORS.TextPrimary
-    ToggleLabel.TextSize = 13
-    ToggleLabel.Font = FONTS.Medium
+    ToggleLabel.TextSize = 14
+    ToggleLabel.Font = FONTS.SemiBold
     ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
     ToggleLabel.TextYAlignment = Enum.TextYAlignment.Center
+    ToggleLabel.ZIndex = 6
     ToggleLabel.Parent = ToggleButton
     
+    -- Enhanced switch design
     local SwitchTrack = Instance.new("Frame")
-    SwitchTrack.Size = UDim2.new(0, 44, 0, 24)
-    SwitchTrack.Position = UDim2.new(1, -44, 0.5, -12)
+    SwitchTrack.Size = UDim2.new(0, 54, 0, 28)
+    SwitchTrack.Position = UDim2.new(1, -54, 0.5, -14)
     SwitchTrack.BackgroundColor3 = COLORS.Border
     SwitchTrack.BorderSizePixel = 0
+    SwitchTrack.ZIndex = 6
     SwitchTrack.Parent = ToggleButton
     
     CreateCorner(RADIUS.FULL).Parent = SwitchTrack
+    CreateShadow(2, 0.8, COLORS.Shadow).Parent = SwitchTrack
+    
+    -- Inner track glow
+    local trackGlow = CreateGlow(COLORS.Primary, 0)
+    trackGlow.Parent = SwitchTrack
+    trackGlow.Visible = false
     
     local SwitchThumb = Instance.new("Frame")
-    SwitchThumb.Size = UDim2.new(0, 20, 0, 20)
+    SwitchThumb.Size = UDim2.new(0, 24, 0, 24)
     SwitchThumb.Position = UDim2.new(0, 2, 0, 2)
     SwitchThumb.BackgroundColor3 = COLORS.TextPrimary
     SwitchThumb.BorderSizePixel = 0
+    SwitchThumb.ZIndex = 7
     SwitchThumb.Parent = SwitchTrack
     
     CreateCorner(RADIUS.FULL).Parent = SwitchThumb
-    CreateShadow(4, 0.3).Parent = SwitchThumb
+    CreateShadow(6, 0.6).Parent = SwitchThumb
+    
+    -- Thumb glow effect
+    local thumbGlow = CreateGlow(COLORS.Primary, 0)
+    thumbGlow.Parent = SwitchThumb
+    thumbGlow.Visible = false
     
     local toggled = config.CurrentValue or false
     
     local function updateToggle()
         if toggled then
+            trackGlow.Visible = true
+            thumbGlow.Visible = true
+            
             TweenService:Create(SwitchTrack, MOTION.Medium, {
                 BackgroundColor3 = COLORS.Primary
             }):Play()
-            TweenService:Create(SwitchThumb, MOTION.Medium, {
-                Position = UDim2.new(1, -22, 0, 2)
+            TweenService:Create(SwitchThumb, MOTION.Spring, {
+                Position = UDim2.new(1, -26, 0, 2),
+                BackgroundColor3 = COLORS.TextPrimary
+            }):Play()
+            TweenService:Create(trackGlow, MOTION.Medium, {
+                ImageTransparency = 0.7
+            }):Play()
+            TweenService:Create(thumbGlow, MOTION.Medium, {
+                ImageTransparency = 0.8
+            }):Play()
+            TweenService:Create(ToggleLabel, MOTION.Fast, {
+                TextColor3 = COLORS.Primary
             }):Play()
         else
             TweenService:Create(SwitchTrack, MOTION.Medium, {
                 BackgroundColor3 = COLORS.Border
             }):Play()
-            TweenService:Create(SwitchThumb, MOTION.Medium, {
-                Position = UDim2.new(0, 2, 0, 2)
+            TweenService:Create(SwitchThumb, MOTION.Spring, {
+                Position = UDim2.new(0, 2, 0, 2),
+                BackgroundColor3 = COLORS.TextSecondary
             }):Play()
+            TweenService:Create(trackGlow, MOTION.Medium, {
+                ImageTransparency = 1
+            }):Play()
+            TweenService:Create(thumbGlow, MOTION.Medium, {
+                ImageTransparency = 1
+            }):Play()
+            TweenService:Create(ToggleLabel, MOTION.Fast, {
+                TextColor3 = COLORS.TextPrimary
+            }):Play()
+            
+            spawn(function()
+                wait(0.3)
+                if trackGlow and trackGlow.Parent then trackGlow.Visible = false end
+                if thumbGlow and thumbGlow.Parent then thumbGlow.Visible = false end
+            end)
         end
     end
     
@@ -354,19 +517,24 @@ function Tab:CreateToggle(config)
     
     ToggleButton.MouseButton1Click:Connect(function()
         toggled = not toggled
+        CreateRipple(SwitchTrack, COLORS.Primary)
         updateToggle()
         if config.Callback then
             config.Callback(toggled)
         end
     end)
     
-    -- Hover effects
+    -- Enhanced hover effects
     ToggleFrame.MouseEnter:Connect(function()
         TweenService:Create(ToggleFrame, MOTION.Fast, {
             BackgroundColor3 = COLORS.SurfaceHover
         }):Play()
         TweenService:Create(ToggleFrame:FindFirstChild("UIStroke"), MOTION.Fast, {
-            Color = COLORS.BorderHover
+            Color = COLORS.BorderHover,
+            Thickness = 1.5
+        }):Play()
+        TweenService:Create(SwitchTrack, MOTION.Fast, {
+            Size = UDim2.new(0, 56, 0, 30)
         }):Play()
     end)
     
@@ -375,7 +543,11 @@ function Tab:CreateToggle(config)
             BackgroundColor3 = COLORS.Surface
         }):Play()
         TweenService:Create(ToggleFrame:FindFirstChild("UIStroke"), MOTION.Fast, {
-            Color = COLORS.Border
+            Color = COLORS.Border,
+            Thickness = 1
+        }):Play()
+        TweenService:Create(SwitchTrack, MOTION.Fast, {
+            Size = UDim2.new(0, 54, 0, 28)
         }):Play()
     end)
     
@@ -881,7 +1053,7 @@ function FischnishedUI:CreateWindow(config)
     ScreenGui.Parent = CoreGui
     Window.Gui = ScreenGui
     
-    -- Create main frame
+    -- Create main frame with enhanced styling
     local MainFrame = Instance.new("Frame")
     MainFrame.Name = "MainFrame"
     MainFrame.Size = Window.Size
@@ -892,112 +1064,156 @@ function FischnishedUI:CreateWindow(config)
     MainFrame.Parent = ScreenGui
     Window.MainFrame = MainFrame
     
-    CreateCorner(RADIUS.XL).Parent = MainFrame
-    CreateStroke(1, COLORS.Border).Parent = MainFrame
-    CreateShadow(8, 0.3).Parent = MainFrame
+    CreateCorner(RADIUS.XXL).Parent = MainFrame
+    CreateStroke(2, COLORS.Border).Parent = MainFrame
+    CreateShadow(16, 0.7, COLORS.Shadow).Parent = MainFrame
+    CreateGlow(COLORS.Primary, 0.1).Parent = MainFrame
     
-    -- Title bar
+    -- Enhanced glass effect background
+    local glassEffect = CreateBlur(0.15)
+    glassEffect.Parent = MainFrame
+    CreateCorner(RADIUS.XXL).Parent = glassEffect
+    
+    -- Title bar with premium styling
     local TitleBar = Instance.new("Frame")
     TitleBar.Name = "TitleBar"
-    TitleBar.Size = UDim2.new(1, 0, 0, 56)
+    TitleBar.Size = UDim2.new(1, 0, 0, 64)
     TitleBar.Position = UDim2.new(0, 0, 0, 0)
     TitleBar.BackgroundColor3 = COLORS.Surface
     TitleBar.BorderSizePixel = 0
     TitleBar.Parent = MainFrame
     
-    CreateCorner(RADIUS.XL).Parent = TitleBar
+    CreateCorner(RADIUS.XXL).Parent = TitleBar
     CreateStroke(1, COLORS.Border).Parent = TitleBar
-    CreatePadding(SPACING.XL).Parent = TitleBar
+    CreatePadding(SPACING.XXL).Parent = TitleBar
+    
+    -- Title bar gradient
+    local titleGradient = CreateGradientBackground(TitleBar, {COLORS.Surface, COLORS.SurfaceElevated}, 135)
+    titleGradient.BackgroundTransparency = 0.3
+    CreateCorner(RADIUS.XXL).Parent = titleGradient
     
     -- Title bar corner fix (remove bottom corners)
     local titleCornerFix = Instance.new("Frame")
-    titleCornerFix.Size = UDim2.new(1, 0, 0, RADIUS.XL)
+    titleCornerFix.Size = UDim2.new(1, 0, 0, RADIUS.XXL)
+    titleCornerFix.Position = UDim2.new(0, 0, 1, -RADIUS.XXL)
+    titleCornerFix.BackgroundColor3 = COLORS.Surface
+    titleCornerFix.BorderSizePixel = 0
+    titleCornerFix.ZIndex = 2
+    titleCornerFix.Parent = TitleBar
     
-    -- Title text
+    -- Enhanced title text
     local TitleText = Instance.new("TextLabel")
     TitleText.Name = "TitleText"
-    TitleText.Size = UDim2.new(1, -100, 1, 0)
+    TitleText.Size = UDim2.new(1, -120, 1, 0)
     TitleText.Position = UDim2.new(0, 0, 0, 0)
     TitleText.BackgroundTransparency = 1
     TitleText.Text = Window.Name
     TitleText.TextColor3 = COLORS.TextPrimary
-    TitleText.TextSize = 16
-    TitleText.Font = FONTS.SemiBold
+    TitleText.TextSize = 18
+    TitleText.Font = FONTS.Bold
     TitleText.TextXAlignment = Enum.TextXAlignment.Left
     TitleText.TextYAlignment = Enum.TextYAlignment.Center
+    TitleText.ZIndex = 5
     TitleText.Parent = TitleBar
     
-    -- Close button
+    -- Premium close button
     local CloseButton = Instance.new("TextButton")
     CloseButton.Name = "CloseButton"
-    CloseButton.Size = UDim2.new(0, 32, 0, 32)
-    CloseButton.Position = UDim2.new(1, -32, 0.5, -16)
-    CloseButton.BackgroundColor3 = Color3.fromRGB(239, 68, 68)
+    CloseButton.Size = UDim2.new(0, 36, 0, 36)
+    CloseButton.Position = UDim2.new(1, -36, 0.5, -18)
+    CloseButton.BackgroundColor3 = COLORS.Error
     CloseButton.BorderSizePixel = 0
     CloseButton.Text = "×"
     CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.TextSize = 16
-    CloseButton.Font = FONTS.SemiBold
+    CloseButton.TextSize = 18
+    CloseButton.Font = FONTS.Bold
+    CloseButton.ZIndex = 5
     CloseButton.Parent = TitleBar
     
-    CreateCorner(RADIUS.MD).Parent = CloseButton
-    CreateShadow(2, 0.2).Parent = CloseButton
+    CreateCorner(RADIUS.LG).Parent = CloseButton
+    CreateShadow(4, 0.6).Parent = CloseButton
     
+    local closeGlow = CreateGlow(COLORS.Error, 0)
+    closeGlow.Parent = CloseButton
+    closeGlow.Visible = false
+    
+    -- Enhanced close button interactions
     CloseButton.MouseEnter:Connect(function()
+        closeGlow.Visible = true
         TweenService:Create(CloseButton, MOTION.Fast, {
             BackgroundColor3 = Color3.fromRGB(220, 38, 38),
-            Size = UDim2.new(0, 34, 0, 34),
-            Position = UDim2.new(1, -34, 0.5, -17)
+            Size = UDim2.new(0, 40, 0, 40),
+            Position = UDim2.new(1, -40, 0.5, -20)
+        }):Play()
+        TweenService:Create(closeGlow, MOTION.Fast, {
+            ImageTransparency = 0.7
         }):Play()
     end)
     
     CloseButton.MouseLeave:Connect(function()
         TweenService:Create(CloseButton, MOTION.Fast, {
-            BackgroundColor3 = Color3.fromRGB(239, 68, 68),
-            Size = UDim2.new(0, 32, 0, 32),
-            Position = UDim2.new(1, -32, 0.5, -16)
+            BackgroundColor3 = COLORS.Error,
+            Size = UDim2.new(0, 36, 0, 36),
+            Position = UDim2.new(1, -36, 0.5, -18)
         }):Play()
+        TweenService:Create(closeGlow, MOTION.Fast, {
+            ImageTransparency = 1
+        }):Play()
+        spawn(function()
+            wait(0.2)
+            if closeGlow and closeGlow.Parent then
+                closeGlow.Visible = false
+            end
+        end)
     end)
     
     CloseButton.MouseButton1Click:Connect(function()
         CreateRipple(CloseButton, Color3.fromRGB(255, 255, 255))
-        TweenService:Create(MainFrame, MOTION.Spring, {
+        TweenService:Create(MainFrame, MOTION.Bounce, {
             Size = UDim2.new(0, 0, 0, 0),
-            Position = UDim2.new(0.5, 0, 0.5, 0)
+            Position = UDim2.new(0.5, 0, 0.5, 0),
+            Rotation = 5
         }):Play()
-        wait(0.4)
+        TweenService:Create(ScreenGui, MOTION.Fast, {
+            Enabled = false
+        }):Play()
+        wait(0.5)
         ScreenGui:Destroy()
     end)
     
-    -- Content area
+    -- Content area with enhanced styling
     local ContentFrame = Instance.new("Frame")
     ContentFrame.Name = "ContentFrame"
-    ContentFrame.Size = UDim2.new(1, 0, 1, -56)
-    ContentFrame.Position = UDim2.new(0, 0, 0, 56)
+    ContentFrame.Size = UDim2.new(1, 0, 1, -64)
+    ContentFrame.Position = UDim2.new(0, 0, 0, 64)
     ContentFrame.BackgroundTransparency = 1
     ContentFrame.BorderSizePixel = 0
     ContentFrame.Parent = MainFrame
     
-    -- Tab container
+    -- Enhanced tab container
     local TabContainer = Instance.new("Frame")
     TabContainer.Name = "TabContainer"
-    TabContainer.Size = UDim2.new(0, 200, 1, 0)
+    TabContainer.Size = UDim2.new(0, 220, 1, 0)
     TabContainer.Position = UDim2.new(0, 0, 0, 0)
     TabContainer.BackgroundColor3 = COLORS.Surface
     TabContainer.BorderSizePixel = 0
     TabContainer.Parent = ContentFrame
     
     CreateStroke(1, COLORS.Border).Parent = TabContainer
-    CreatePadding(SPACING.LG).Parent = TabContainer
+    CreatePadding(SPACING.XL).Parent = TabContainer
     
-    local TabList = CreateListLayout(Enum.FillDirection.Vertical, SPACING.SM)
+    -- Tab container gradient
+    local tabGradient = CreateGradientBackground(TabContainer, {COLORS.Surface, COLORS.SurfaceElevated}, 180)
+    tabGradient.BackgroundTransparency = 0.5
+    
+    local TabList = CreateListLayout(Enum.FillDirection.Vertical, SPACING.MD)
     TabList.Parent = TabContainer
     
-    -- Tab content area
+    -- Enhanced tab content area
     local TabContentFrame = Instance.new("Frame")
     TabContentFrame.Name = "TabContentFrame"
-    TabContentFrame.Size = UDim2.new(1, -200, 1, 0)
-    TabContentFrame.Position = UDim2.new(0, 200, 0, 0)
+    TabContentFrame.Size = UDim2.new(1, -220, 1, 0)
+    TabContentFrame.Position = UDim2.new(0, 220, 0, 0)
     TabContentFrame.BackgroundTransparency = 1
     TabContentFrame.BorderSizePixel = 0
     TabContentFrame.Parent = ContentFrame
@@ -1053,62 +1269,82 @@ function FischnishedUI:CreateWindow(config)
             Window = self
         }
         
-        -- Create tab button
+        -- Enhanced tab button with premium styling
         local TabButton = Instance.new("TextButton")
         TabButton.Name = "TabButton_" .. TabInstance.Name
-        TabButton.Size = UDim2.new(1, 0, 0, 40)
+        TabButton.Size = UDim2.new(1, 0, 0, 48)
         TabButton.BackgroundColor3 = COLORS.Surface
         TabButton.BorderSizePixel = 0
         TabButton.Text = TabInstance.Name
         TabButton.TextColor3 = COLORS.TextSecondary
-        TabButton.TextSize = 13
-        TabButton.Font = FONTS.Medium
+        TabButton.TextSize = 14
+        TabButton.Font = FONTS.SemiBold
         TabButton.TextXAlignment = Enum.TextXAlignment.Left
         TabButton.Parent = TabContainer
         
-        CreateCorner(RADIUS.MD).Parent = TabButton
+        CreateCorner(RADIUS.LG).Parent = TabButton
         CreatePadding(SPACING.LG).Parent = TabButton
+        CreateShadow(2, 0.9).Parent = TabButton
         TabInstance.Button = TabButton
         
-        -- Create tab content
+        -- Tab button gradient background
+        local tabGradient = CreateGradientBackground(TabButton, {COLORS.Surface, COLORS.SurfaceElevated}, 135)
+        tabGradient.BackgroundTransparency = 0.8
+        CreateCorner(RADIUS.LG).Parent = tabGradient
+        
+        -- Tab button glow effect
+        local tabGlow = CreateGlow(COLORS.Primary, 0)
+        tabGlow.Parent = TabButton
+        tabGlow.Visible = false
+        
+        -- Enhanced tab content with better scrolling
         local TabContent = Instance.new("ScrollingFrame")
         TabContent.Name = "TabContent_" .. TabInstance.Name
         TabContent.Size = UDim2.new(1, 0, 1, 0)
         TabContent.Position = UDim2.new(0, 0, 0, 0)
         TabContent.BackgroundTransparency = 1
         TabContent.BorderSizePixel = 0
-        TabContent.ScrollBarThickness = 6
+        TabContent.ScrollBarThickness = 8
         TabContent.ScrollBarImageColor3 = COLORS.Primary
-        TabContent.ScrollBarImageTransparency = 0.6
+        TabContent.ScrollBarImageTransparency = 0.4
         TabContent.CanvasSize = UDim2.new(0, 0, 0, 0)
         TabContent.Visible = false
         TabContent.Parent = TabContentFrame
         
-        CreatePadding(SPACING.XL).Parent = TabContent
+        CreatePadding(SPACING.XXL).Parent = TabContent
         TabInstance.Content = TabContent
         
-        local ContentLayout = CreateListLayout(Enum.FillDirection.Vertical, SPACING.LG)
+        local ContentLayout = CreateListLayout(Enum.FillDirection.Vertical, SPACING.XL)
         ContentLayout.Parent = TabContent
         
-        -- Auto-resize canvas
+        -- Auto-resize canvas with smooth animation
         ContentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-            TabContent.CanvasSize = UDim2.new(0, 0, 0, ContentLayout.AbsoluteContentSize.Y + SPACING.XL * 2)
+            local newSize = UDim2.new(0, 0, 0, ContentLayout.AbsoluteContentSize.Y + SPACING.XXL * 2)
+            TweenService:Create(TabContent, MOTION.Fast, {
+                CanvasSize = newSize
+            }):Play()
         end)
         
-        -- Tab selection logic
+        -- Enhanced tab selection logic with ripple
         TabButton.MouseButton1Click:Connect(function()
             CreateRipple(TabButton, COLORS.Primary)
             self:SelectTab(TabInstance)
         end)
         
-        -- Hover effect
+        -- Premium hover effects
         TabButton.MouseEnter:Connect(function()
             if not TabInstance.Active then
+                tabGlow.Visible = true
                 TweenService:Create(TabButton, MOTION.Fast, {
-                    BackgroundColor3 = COLORS.SurfaceHover
+                    BackgroundColor3 = COLORS.SurfaceHover,
+                    Size = UDim2.new(1, 4, 0, 48)
                 }):Play()
                 TweenService:Create(TabButton, MOTION.Fast, {
-                    TextColor3 = COLORS.TextPrimary
+                    TextColor3 = COLORS.TextPrimary,
+                    TextSize = 15
+                }):Play()
+                TweenService:Create(tabGlow, MOTION.Fast, {
+                    ImageTransparency = 0.9
                 }):Play()
             end
         end)
@@ -1116,11 +1352,22 @@ function FischnishedUI:CreateWindow(config)
         TabButton.MouseLeave:Connect(function()
             if not TabInstance.Active then
                 TweenService:Create(TabButton, MOTION.Fast, {
-                    BackgroundColor3 = COLORS.Surface
+                    BackgroundColor3 = COLORS.Surface,
+                    Size = UDim2.new(1, 0, 0, 48)
                 }):Play()
                 TweenService:Create(TabButton, MOTION.Fast, {
-                    TextColor3 = COLORS.TextSecondary
+                    TextColor3 = COLORS.TextSecondary,
+                    TextSize = 14
                 }):Play()
+                TweenService:Create(tabGlow, MOTION.Fast, {
+                    ImageTransparency = 1
+                }):Play()
+                spawn(function()
+                    wait(0.2)
+                    if tabGlow and tabGlow.Parent and not TabInstance.Active then
+                        tabGlow.Visible = false
+                    end
+                end)
             end
         end)
         
@@ -1144,35 +1391,81 @@ function FischnishedUI:CreateWindow(config)
     end
     
     function Window:SelectTab(tab)
-        -- Deselect all tabs first
+        -- Enhanced tab selection with smooth animations
         for _, existingTab in pairs(self.Tabs) do
             existingTab.Active = false
             existingTab.Content.Visible = false
-            TweenService:Create(existingTab.Button, MOTION.Fast, {
+            
+            -- Smooth deselection animation
+            TweenService:Create(existingTab.Button, MOTION.Medium, {
                 BackgroundColor3 = COLORS.Surface,
-                TextColor3 = COLORS.TextSecondary
+                TextColor3 = COLORS.TextSecondary,
+                Size = UDim2.new(1, 0, 0, 48)
             }):Play()
+            
+            -- Hide tab glow
+            local tabGlow = existingTab.Button:FindFirstChild("Glow")
+            if tabGlow then
+                TweenService:Create(tabGlow, MOTION.Fast, {
+                    ImageTransparency = 1
+                }):Play()
+                spawn(function()
+                    wait(0.2)
+                    if tabGlow and tabGlow.Parent then
+                        tabGlow.Visible = false
+                    end
+                end)
+            end
         end
         
-        -- Select new tab
+        -- Enhanced tab selection animation
         tab.Active = true
         tab.Content.Visible = true
         self.CurrentTab = tab
         
-        TweenService:Create(tab.Button, MOTION.Fast, {
+        -- Show tab glow
+        local activeGlow = tab.Button:FindFirstChild("Glow")
+        if activeGlow then
+            activeGlow.Visible = true
+            TweenService:Create(activeGlow, MOTION.Medium, {
+                ImageTransparency = 0.7
+            }):Play()
+        end
+        
+        -- Premium selection animation
+        TweenService:Create(tab.Button, MOTION.Spring, {
             BackgroundColor3 = COLORS.Primary,
-            TextColor3 = COLORS.TextPrimary
+            TextColor3 = COLORS.TextPrimary,
+            Size = UDim2.new(1, 8, 0, 52)
+        }):Play()
+        
+        -- Content fade-in animation
+        tab.Content.BackgroundTransparency = 1
+        TweenService:Create(tab.Content, MOTION.Medium, {
+            BackgroundTransparency = 0
         }):Play()
     end
     
-    -- Entrance animation
+    -- Enhanced entrance animation with multiple stages
     MainFrame.Size = UDim2.new(0, 0, 0, 0)
     MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+    MainFrame.Rotation = -5
     
+    -- Stage 1: Initial appearance
     TweenService:Create(MainFrame, MOTION.Bounce, {
-        Size = Window.Size,
-        Position = UDim2.new(0.5, -Window.Size.X.Offset/2, 0.5, -Window.Size.Y.Offset/2)
+        Size = UDim2.new(0, Window.Size.X.Offset * 0.8, 0, Window.Size.Y.Offset * 0.8),
+        Position = UDim2.new(0.5, -Window.Size.X.Offset * 0.4, 0.5, -Window.Size.Y.Offset * 0.4),
+        Rotation = 0
     }):Play()
+    
+    -- Stage 2: Final size with overshoot
+    spawn(function()
+        wait(0.3)
+        TweenService:Create(MainFrame, MOTION.Elastic, {
+            Size = Window.Size,
+            Position = UDim2.new(0.5, -Window.Size.X.Offset/2, 0.5, -Window.Size.Y.Offset/2)
+        }):Play()
+    end)
     
     return Window
 end
