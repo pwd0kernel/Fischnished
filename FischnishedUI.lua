@@ -11,45 +11,40 @@ local Players = game:GetService("Players")
 local FischnishedUI = {}
 FischnishedUI.__index = FischnishedUI
 
--- Ultra-Modern Premium Color Palette
+-- GitHub-Inspired Minimal Color Palette
 local COLORS = {
-    -- Primary Colors (Enhanced Indigo Gradient)
-    Primary = Color3.fromRGB(99, 102, 241),       -- Modern Indigo
-    PrimaryDark = Color3.fromRGB(67, 56, 202),    -- Deeper Primary
-    PrimaryLight = Color3.fromRGB(129, 140, 248), -- Lighter Primary
-    PrimaryGlow = Color3.fromRGB(139, 150, 255),  -- Glow Effect
+    -- Primary Colors (GitHub Blue)
+    Primary = Color3.fromRGB(33, 136, 255),       -- GitHub Blue
+    PrimaryDark = Color3.fromRGB(9, 105, 218),    -- Darker Primary
+    PrimaryLight = Color3.fromRGB(84, 174, 255),  -- Lighter Primary
     
-    -- Background System (Refined Dark Theme)
-    Background = Color3.fromRGB(7, 8, 12),        -- Rich Dark
-    Surface = Color3.fromRGB(13, 15, 19),         -- Elevated Surface
-    SurfaceHover = Color3.fromRGB(18, 21, 27),    -- Interactive Hover
-    SurfaceActive = Color3.fromRGB(23, 27, 35),   -- Active State
-    SurfaceCard = Color3.fromRGB(16, 18, 23),     -- Card Background
+    -- Background System (GitHub Dark Theme)
+    Background = Color3.fromRGB(13, 17, 23),      -- GitHub Dark BG
+    Surface = Color3.fromRGB(22, 27, 34),         -- GitHub Card BG
+    SurfaceHover = Color3.fromRGB(30, 39, 46),    -- Hover State
+    SurfaceActive = Color3.fromRGB(33, 38, 45),   -- Active State
+    SurfaceBorder = Color3.fromRGB(48, 54, 61),   -- GitHub Border
     
-    -- Text Hierarchy (Premium Typography)
-    TextPrimary = Color3.fromRGB(248, 250, 252),  -- Pure White
-    TextSecondary = Color3.fromRGB(148, 163, 184), -- Soft Gray
-    TextTertiary = Color3.fromRGB(100, 116, 139), -- Muted Gray
-    TextDisabled = Color3.fromRGB(71, 85, 105),   -- Disabled State
-    TextAccent = Color3.fromRGB(129, 140, 248),   -- Accent Text
+    -- Text Hierarchy (GitHub Text Colors)
+    TextPrimary = Color3.fromRGB(230, 237, 243),  -- High Emphasis
+    TextSecondary = Color3.fromRGB(139, 148, 158), -- Medium Emphasis  
+    TextTertiary = Color3.fromRGB(110, 118, 129), -- Low Emphasis
+    TextDisabled = Color3.fromRGB(87, 96, 106),   -- Disabled
     
-    -- State Colors (Refined Semantics)
-    Success = Color3.fromRGB(16, 185, 129),       -- Emerald
-    Warning = Color3.fromRGB(245, 158, 11),       -- Amber
-    Error = Color3.fromRGB(239, 68, 68),          -- Red
-    Info = Color3.fromRGB(59, 130, 246),          -- Blue
+    -- State Colors (GitHub Status Colors)
+    Success = Color3.fromRGB(46, 160, 67),        -- GitHub Green
+    Warning = Color3.fromRGB(218, 154, 47),       -- GitHub Orange
+    Error = Color3.fromRGB(248, 81, 73),          -- GitHub Red
+    Info = Color3.fromRGB(79, 172, 254),          -- GitHub Blue
     
-    -- Border System (Sophisticated Outlines)
-    Border = Color3.fromRGB(30, 35, 42),          -- Refined Border
-    BorderHover = Color3.fromRGB(45, 55, 72),     -- Hover Border
-    BorderFocus = Color3.fromRGB(99, 102, 241),   -- Focus Highlight
-    BorderActive = Color3.fromRGB(129, 140, 248), -- Active Border
+    -- Border System
+    Border = Color3.fromRGB(48, 54, 61),          -- GitHub Border
+    BorderHover = Color3.fromRGB(56, 68, 77),     -- Hover Border
+    BorderFocus = Color3.fromRGB(33, 136, 255),   -- Focus Border
     
-    -- Special Effects
-    Accent = Color3.fromRGB(168, 85, 247),        -- Purple Accent
-    Glass = Color3.fromRGB(255, 255, 255),        -- Glass Effect
-    Shadow = Color3.fromRGB(0, 0, 0),             -- Shadow Color
-    Overlay = Color3.fromRGB(15, 23, 42),         -- Modal Overlay
+    -- Special
+    Accent = Color3.fromRGB(163, 113, 247),       -- GitHub Purple
+    Glass = Color3.fromRGB(255, 255, 255),        -- For glass effects
 }
 
 -- Typography System
@@ -61,44 +56,32 @@ local FONTS = {
     Mono = Enum.Font.RobotoMono,
 }
 
--- Premium Motion System (Refined Animations)
+-- Motion System
 local MOTION = {
-    -- Quick interactions
-    Fast = TweenInfo.new(0.12, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-    Medium = TweenInfo.new(0.2, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-    Slow = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
-    
-    -- Sophisticated effects
-    Spring = TweenInfo.new(0.45, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, false, 0, 1.15),
-    Bounce = TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, false, 0, 1.08),
-    Elastic = TweenInfo.new(0.5, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out, 0, false, 0, 0.8),
-    
-    -- Smooth transitions
-    Smooth = TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out),
-    Silk = TweenInfo.new(0.4, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out),
-    
-    -- Micro-interactions
-    Instant = TweenInfo.new(0.08, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
-    Subtle = TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+    Fast = TweenInfo.new(0.15, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+    Medium = TweenInfo.new(0.25, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+    Slow = TweenInfo.new(0.35, Enum.EasingStyle.Quart, Enum.EasingDirection.Out),
+    Spring = TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, false, 0, 1.2),
+    Bounce = TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out, 0, false, 0, 1.1),
 }
 
--- Spacing System
+-- GitHub-Inspired Spacing System (More Minimal)
 local SPACING = {
-    XS = 4,   -- 4px
-    SM = 8,   -- 8px  
-    MD = 12,  -- 12px
-    LG = 16,  -- 16px
-    XL = 20,  -- 20px
-    XXL = 24, -- 24px
+    XS = 2,   -- 2px - Micro spacing
+    SM = 4,   -- 4px - Small spacing
+    MD = 8,   -- 8px - Medium spacing
+    LG = 12,  -- 12px - Large spacing
+    XL = 16,  -- 16px - Extra large
+    XXL = 20, -- 20px - Component padding
 }
 
--- Border Radius System
+-- GitHub-Inspired Border Radius System
 local RADIUS = {
-    SM = 4,   -- Small radius
-    MD = 6,   -- Medium radius
+    SM = 3,   -- Small radius (GitHub buttons)
+    MD = 6,   -- Medium radius (GitHub cards)
     LG = 8,   -- Large radius
-    XL = 12,  -- Extra large radius
-    XXL = 16, -- Component radius
+    XL = 10,  -- Extra large radius
+    XXL = 12, -- Component radius
     FULL = 999, -- Fully rounded
 }
 
@@ -127,61 +110,19 @@ local function CreateGradient(colors, rotation, transparency)
     return gradient
 end
 
--- Enhanced Shadow System
-local function CreateShadow(blur, transparency, offset)
+local function CreateShadow(blur, transparency)
     local shadow = Instance.new("ImageLabel")
     shadow.Name = "DropShadow"
     shadow.BackgroundTransparency = 1
     shadow.Image = "rbxasset://textures/ui/Controls/DropShadow.png"
-    shadow.ImageColor3 = COLORS.Shadow
-    shadow.ImageTransparency = transparency or 0.6
+    shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+    shadow.ImageTransparency = transparency or 0.7
     shadow.ScaleType = Enum.ScaleType.Slice
     shadow.SliceCenter = Rect.new(49, 49, 450, 450)
     shadow.Size = UDim2.new(1, blur * 2, 1, blur * 2)
-    shadow.Position = UDim2.new(0, -blur + (offset or 0), 0, -blur + (offset or 2))
+    shadow.Position = UDim2.new(0, -blur, 0, -blur)
     shadow.ZIndex = -1
     return shadow
-end
-
--- Enhanced Gradient System
-local function CreateAdvancedGradient(colorSequence, rotation, transparency)
-    local gradient = Instance.new("UIGradient")
-    if type(colorSequence) == "table" then
-        local keypoints = {}
-        for i, color in ipairs(colorSequence) do
-            table.insert(keypoints, ColorSequenceKeypoint.new((i-1)/(#colorSequence-1), color))
-        end
-        gradient.Color = ColorSequence.new(keypoints)
-    else
-        gradient.Color = colorSequence
-    end
-    gradient.Rotation = rotation or 0
-    if transparency then
-        gradient.Transparency = transparency
-    end
-    return gradient
-end
-
--- Premium Glass Effect
-local function CreateGlassEffect(parent, intensity)
-    local glass = Instance.new("Frame")
-    glass.Name = "GlassEffect"
-    glass.Size = UDim2.new(1, 0, 1, 0)
-    glass.BackgroundColor3 = COLORS.Glass
-    glass.BackgroundTransparency = 0.92
-    glass.BorderSizePixel = 0
-    glass.ZIndex = parent.ZIndex + 1
-    glass.Parent = parent
-    
-    local glassGradient = CreateAdvancedGradient({
-        Color3.fromRGB(255, 255, 255),
-        Color3.fromRGB(255, 255, 255),
-        Color3.fromRGB(240, 245, 255)
-    }, 45)
-    glassGradient.Parent = glass
-    
-    CreateCorner(RADIUS.LG).Parent = glass
-    return glass
 end
 
 local function CreatePadding(all, left, right, top, bottom)
@@ -210,7 +151,6 @@ local function CreateListLayout(direction, padding, alignment)
     return layout
 end
 
--- Premium Ripple Effect with Enhanced Animation
 local function CreateRipple(parent, color)
     local ripple = Instance.new("Frame")
     ripple.Name = "Ripple"
@@ -220,40 +160,24 @@ local function CreateRipple(parent, color)
         rippleColor = color
     end
     ripple.BackgroundColor3 = rippleColor
-    ripple.BackgroundTransparency = 0.75
+    ripple.BackgroundTransparency = 0.8
     ripple.BorderSizePixel = 0
     ripple.Size = UDim2.new(0, 0, 0, 0)
     ripple.Position = UDim2.new(0.5, 0, 0.5, 0)
     ripple.AnchorPoint = Vector2.new(0.5, 0.5)
-    ripple.ZIndex = parent.ZIndex + 2
+    ripple.ZIndex = parent.ZIndex + 1
     ripple.Parent = parent
     
     CreateCorner(RADIUS.FULL).Parent = ripple
     
-    -- Enhanced ripple animation with multiple phases
-    local rippleTween = TweenService:Create(ripple, MOTION.Medium, {
-        Size = UDim2.new(1.2, 30, 1.2, 30),
+    -- Animate ripple
+    TweenService:Create(ripple, MOTION.Fast, {
+        Size = UDim2.new(1, 20, 1, 20),
         BackgroundTransparency = 1
-    })
-    
-    -- Add subtle scale effect to parent
-    local parentScale = TweenService:Create(parent, MOTION.Instant, {
-        Size = UDim2.new(parent.Size.X.Scale * 0.98, parent.Size.X.Offset, parent.Size.Y.Scale * 0.98, parent.Size.Y.Offset)
-    })
-    
-    local parentRestore = TweenService:Create(parent, MOTION.Bounce, {
-        Size = UDim2.new(parent.Size.X.Scale / 0.98, parent.Size.X.Offset, parent.Size.Y.Scale / 0.98, parent.Size.Y.Offset)
-    })
-    
-    rippleTween:Play()
-    parentScale:Play()
-    
-    parentScale.Completed:Connect(function()
-        parentRestore:Play()
-    end)
+    }):Play()
     
     spawn(function()
-        wait(0.4)
+        wait(0.3)
         ripple:Destroy()
     end)
     
@@ -267,22 +191,30 @@ Tab.__index = Tab
 function Tab:CreateSection(name)
     local Section = Instance.new("Frame")
     Section.Name = "Section_" .. name
-    Section.Size = UDim2.new(1, 0, 0, 40)
+    Section.Size = UDim2.new(1, 0, 0, 28)
     Section.BackgroundTransparency = 1
     Section.BorderSizePixel = 0
     Section.Parent = self.Content
     
     local SectionText = Instance.new("TextLabel")
-    SectionText.Size = UDim2.new(1, -SPACING.LG, 1, 0)
-    SectionText.Position = UDim2.new(0, SPACING.LG, 0, 0)
+    SectionText.Size = UDim2.new(1, 0, 1, 0)
+    SectionText.Position = UDim2.new(0, 0, 0, 0)
     SectionText.BackgroundTransparency = 1
-    SectionText.Text = name:upper()
+    SectionText.Text = name
     SectionText.TextColor3 = COLORS.TextTertiary
-    SectionText.TextSize = 11
+    SectionText.TextSize = 10
     SectionText.Font = FONTS.SemiBold
     SectionText.TextXAlignment = Enum.TextXAlignment.Left
-    SectionText.TextYAlignment = Enum.TextYAlignment.Center
+    SectionText.TextYAlignment = Enum.TextYAlignment.Bottom
     SectionText.Parent = Section
+    
+    -- GitHub-style divider line
+    local Divider = Instance.new("Frame")
+    Divider.Size = UDim2.new(1, 0, 0, 1)
+    Divider.Position = UDim2.new(0, 0, 1, -1)
+    Divider.BackgroundColor3 = COLORS.Border
+    Divider.BorderSizePixel = 0
+    Divider.Parent = Section
     
     return Section
 end
@@ -290,108 +222,64 @@ end
 function Tab:CreateButton(config)
     local ButtonFrame = Instance.new("Frame")
     ButtonFrame.Name = "ButtonFrame_" .. (config.Name or "Button")
-    ButtonFrame.Size = UDim2.new(1, 0, 0, 48)
+    ButtonFrame.Size = UDim2.new(1, 0, 0, 32)
     ButtonFrame.BackgroundTransparency = 1
     ButtonFrame.Parent = self.Content
     
     local Button = Instance.new("TextButton")
     Button.Name = "Button"
-    Button.Size = UDim2.new(1, -SPACING.LG * 2, 1, 0)
-    Button.Position = UDim2.new(0, SPACING.LG, 0, 0)
-    Button.BackgroundColor3 = COLORS.SurfaceCard
+    Button.Size = UDim2.new(1, 0, 1, 0)
+    Button.Position = UDim2.new(0, 0, 0, 0)
+    Button.BackgroundColor3 = COLORS.Surface
     Button.BorderSizePixel = 0
     Button.Text = ""
     Button.ClipsDescendants = true
     Button.Parent = ButtonFrame
     
-    CreateCorner(RADIUS.LG).Parent = Button
+    CreateCorner(RADIUS.SM).Parent = Button
     CreateStroke(1, COLORS.Border).Parent = Button
-    CreateShadow(4, 0.8, 1).Parent = Button
     CreatePadding(SPACING.LG).Parent = Button
     
-    -- Enhanced gradient background
-    local buttonGradient = CreateAdvancedGradient({
-        COLORS.SurfaceCard,
-        COLORS.Surface,
-        COLORS.SurfaceCard
-    }, 90)
-    buttonGradient.Parent = Button
-    
-    -- Button icon (optional)
-    local ButtonIcon = nil
-    if config.Icon then
-        ButtonIcon = Instance.new("ImageLabel")
-        ButtonIcon.Size = UDim2.new(0, 20, 0, 20)
-        ButtonIcon.Position = UDim2.new(0, 0, 0.5, -10)
-        ButtonIcon.BackgroundTransparency = 1
-        ButtonIcon.Image = config.Icon
-        ButtonIcon.ImageColor3 = COLORS.TextAccent
-        ButtonIcon.Parent = Button
-    end
-    
-    -- Button text with enhanced styling
+    -- Button text
     local ButtonText = Instance.new("TextLabel")
-    ButtonText.Size = UDim2.new(1, ButtonIcon and -28 or 0, 1, 0)
-    ButtonText.Position = UDim2.new(0, ButtonIcon and 28 or 0, 0, 0)
+    ButtonText.Size = UDim2.new(1, 0, 1, 0)
     ButtonText.BackgroundTransparency = 1
     ButtonText.Text = config.Name or "Button"
     ButtonText.TextColor3 = COLORS.TextPrimary
-    ButtonText.TextSize = 14
+    ButtonText.TextSize = 12
     ButtonText.Font = FONTS.Medium
-    ButtonText.TextXAlignment = ButtonIcon and Enum.TextXAlignment.Left or Enum.TextXAlignment.Center
+    ButtonText.TextXAlignment = Enum.TextXAlignment.Center
     ButtonText.TextYAlignment = Enum.TextYAlignment.Center
     ButtonText.Parent = Button
     
-    -- Premium hover effects
+    -- Hover effects (GitHub-style)
     Button.MouseEnter:Connect(function()
         TweenService:Create(Button, MOTION.Fast, {
             BackgroundColor3 = COLORS.SurfaceHover
         }):Play()
         TweenService:Create(Button:FindFirstChild("UIStroke"), MOTION.Fast, {
-            Color = COLORS.BorderHover,
-            Thickness = 1.5
+            Color = COLORS.BorderHover
         }):Play()
-        TweenService:Create(ButtonText, MOTION.Fast, {
-            TextColor3 = COLORS.TextAccent
-        }):Play()
-        if ButtonIcon then
-            TweenService:Create(ButtonIcon, MOTION.Fast, {
-                ImageColor3 = COLORS.Primary,
-                Size = UDim2.new(0, 22, 0, 22),
-                Position = UDim2.new(0, -1, 0.5, -11)
-            }):Play()
-        end
     end)
     
     Button.MouseLeave:Connect(function()
         TweenService:Create(Button, MOTION.Fast, {
-            BackgroundColor3 = COLORS.SurfaceCard
+            BackgroundColor3 = COLORS.Surface
         }):Play()
         TweenService:Create(Button:FindFirstChild("UIStroke"), MOTION.Fast, {
-            Color = COLORS.Border,
-            Thickness = 1
+            Color = COLORS.Border
         }):Play()
-        TweenService:Create(ButtonText, MOTION.Fast, {
-            TextColor3 = COLORS.TextPrimary
-        }):Play()
-        if ButtonIcon then
-            TweenService:Create(ButtonIcon, MOTION.Fast, {
-                ImageColor3 = COLORS.TextAccent,
-                Size = UDim2.new(0, 20, 0, 20),
-                Position = UDim2.new(0, 0, 0.5, -10)
-            }):Play()
-        end
     end)
     
     Button.MouseButton1Down:Connect(function()
         CreateRipple(Button, COLORS.Primary)
-        TweenService:Create(Button, MOTION.Instant, {
+        TweenService:Create(Button, MOTION.Fast, {
             BackgroundColor3 = COLORS.SurfaceActive
         }):Play()
     end)
     
     Button.MouseButton1Up:Connect(function()
-        TweenService:Create(Button, MOTION.Subtle, {
+        TweenService:Create(Button, MOTION.Fast, {
             BackgroundColor3 = COLORS.SurfaceHover
         }):Play()
     end)
@@ -406,22 +294,14 @@ end
 function Tab:CreateToggle(config)
     local ToggleFrame = Instance.new("Frame")
     ToggleFrame.Name = "ToggleFrame_" .. (config.Name or "Toggle")
-    ToggleFrame.Size = UDim2.new(1, 0, 0, 56)
-    ToggleFrame.BackgroundColor3 = COLORS.SurfaceCard
+    ToggleFrame.Size = UDim2.new(1, 0, 0, 36)
+    ToggleFrame.BackgroundColor3 = COLORS.Surface
     ToggleFrame.BorderSizePixel = 0
     ToggleFrame.Parent = self.Content
     
-    CreateCorner(RADIUS.LG).Parent = ToggleFrame
+    CreateCorner(RADIUS.SM).Parent = ToggleFrame
     CreateStroke(1, COLORS.Border).Parent = ToggleFrame
-    CreateShadow(3, 0.85, 1).Parent = ToggleFrame
     CreatePadding(SPACING.LG).Parent = ToggleFrame
-    
-    -- Background gradient
-    local toggleGradient = CreateAdvancedGradient({
-        COLORS.SurfaceCard,
-        COLORS.Surface
-    }, 180)
-    toggleGradient.Parent = ToggleFrame
     
     local ToggleButton = Instance.new("TextButton")
     ToggleButton.Size = UDim2.new(1, 0, 1, 0)
@@ -429,150 +309,92 @@ function Tab:CreateToggle(config)
     ToggleButton.Text = ""
     ToggleButton.Parent = ToggleFrame
     
-    -- Enhanced toggle label with description support
     local ToggleLabel = Instance.new("TextLabel")
-    ToggleLabel.Size = UDim2.new(1, -80, 0.6, 0)
+    ToggleLabel.Size = UDim2.new(1, -50, 1, 0)
     ToggleLabel.BackgroundTransparency = 1
     ToggleLabel.Text = config.Name or "Toggle"
     ToggleLabel.TextColor3 = COLORS.TextPrimary
-    ToggleLabel.TextSize = 14
+    ToggleLabel.TextSize = 12
     ToggleLabel.Font = FONTS.Medium
     ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
     ToggleLabel.TextYAlignment = Enum.TextYAlignment.Center
     ToggleLabel.Parent = ToggleButton
     
-    -- Optional description
-    local ToggleDescription = nil
-    if config.Description then
-        ToggleDescription = Instance.new("TextLabel")
-        ToggleDescription.Size = UDim2.new(1, -80, 0.4, 0)
-        ToggleDescription.Position = UDim2.new(0, 0, 0.6, 0)
-        ToggleDescription.BackgroundTransparency = 1
-        ToggleDescription.Text = config.Description
-        ToggleDescription.TextColor3 = COLORS.TextTertiary
-        ToggleDescription.TextSize = 11
-        ToggleDescription.Font = FONTS.Regular
-        ToggleDescription.TextXAlignment = Enum.TextXAlignment.Left
-        ToggleDescription.TextYAlignment = Enum.TextYAlignment.Top
-        ToggleDescription.TextWrapped = true
-        ToggleDescription.Parent = ToggleButton
-        
-        -- Adjust label size if description exists
-        ToggleLabel.Size = UDim2.new(1, -80, 0.6, 0)
-    end
-    
-    -- Premium switch design
+    -- GitHub-style toggle switch
     local SwitchTrack = Instance.new("Frame")
-    SwitchTrack.Size = UDim2.new(0, 52, 0, 28)
-    SwitchTrack.Position = UDim2.new(1, -52, 0.5, -14)
+    SwitchTrack.Size = UDim2.new(0, 38, 0, 20)
+    SwitchTrack.Position = UDim2.new(1, -38, 0.5, -10)
     SwitchTrack.BackgroundColor3 = COLORS.Border
     SwitchTrack.BorderSizePixel = 0
     SwitchTrack.Parent = ToggleButton
     
     CreateCorner(RADIUS.FULL).Parent = SwitchTrack
-    CreateStroke(1, COLORS.Border).Parent = SwitchTrack
-    
-    -- Inner track for better depth
-    local InnerTrack = Instance.new("Frame")
-    InnerTrack.Size = UDim2.new(1, -4, 1, -4)
-    InnerTrack.Position = UDim2.new(0, 2, 0, 2)
-    InnerTrack.BackgroundColor3 = COLORS.Background
-    InnerTrack.BorderSizePixel = 0
-    InnerTrack.Parent = SwitchTrack
-    
-    CreateCorner(RADIUS.FULL).Parent = InnerTrack
+    CreateStroke(1, COLORS.BorderHover).Parent = SwitchTrack
     
     local SwitchThumb = Instance.new("Frame")
-    SwitchThumb.Size = UDim2.new(0, 22, 0, 22)
-    SwitchThumb.Position = UDim2.new(0, 3, 0, 3)
+    SwitchThumb.Size = UDim2.new(0, 16, 0, 16)
+    SwitchThumb.Position = UDim2.new(0, 2, 0, 2)
     SwitchThumb.BackgroundColor3 = COLORS.TextPrimary
     SwitchThumb.BorderSizePixel = 0
-    SwitchThumb.ZIndex = 2
     SwitchThumb.Parent = SwitchTrack
     
     CreateCorner(RADIUS.FULL).Parent = SwitchThumb
-    CreateShadow(6, 0.4, 2).Parent = SwitchThumb
+    CreateShadow(2, 0.3).Parent = SwitchThumb
     
     local toggled = config.CurrentValue or false
     
-    local function updateToggle(animate)
+    local function updateToggle()
         if toggled then
-            -- Active state
-            if animate then
-                TweenService:Create(SwitchTrack, MOTION.Spring, {
-                    BackgroundColor3 = COLORS.Primary
-                }):Play()
-                TweenService:Create(InnerTrack, MOTION.Spring, {
-                    BackgroundColor3 = COLORS.PrimaryDark
-                }):Play()
-                TweenService:Create(SwitchThumb, MOTION.Bounce, {
-                    Position = UDim2.new(1, -25, 0, 3),
-                    BackgroundColor3 = COLORS.TextPrimary
-                }):Play()
-                TweenService:Create(ToggleLabel, MOTION.Fast, {
-                    TextColor3 = COLORS.TextAccent
-                }):Play()
-            else
-                SwitchTrack.BackgroundColor3 = COLORS.Primary
-                InnerTrack.BackgroundColor3 = COLORS.PrimaryDark
-                SwitchThumb.Position = UDim2.new(1, -25, 0, 3)
-                ToggleLabel.TextColor3 = COLORS.TextAccent
-            end
+            TweenService:Create(SwitchTrack, MOTION.Medium, {
+                BackgroundColor3 = COLORS.Primary
+            }):Play()
+            TweenService:Create(SwitchTrack:FindFirstChild("UIStroke"), MOTION.Medium, {
+                Color = COLORS.Primary
+            }):Play()
+            TweenService:Create(SwitchThumb, MOTION.Medium, {
+                Position = UDim2.new(1, -18, 0, 2),
+                BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            }):Play()
         else
-            -- Inactive state
-            if animate then
-                TweenService:Create(SwitchTrack, MOTION.Spring, {
-                    BackgroundColor3 = COLORS.Border
-                }):Play()
-                TweenService:Create(InnerTrack, MOTION.Spring, {
-                    BackgroundColor3 = COLORS.Background
-                }):Play()
-                TweenService:Create(SwitchThumb, MOTION.Bounce, {
-                    Position = UDim2.new(0, 3, 0, 3),
-                    BackgroundColor3 = COLORS.TextSecondary
-                }):Play()
-                TweenService:Create(ToggleLabel, MOTION.Fast, {
-                    TextColor3 = COLORS.TextPrimary
-                }):Play()
-            else
-                SwitchTrack.BackgroundColor3 = COLORS.Border
-                InnerTrack.BackgroundColor3 = COLORS.Background
-                SwitchThumb.Position = UDim2.new(0, 3, 0, 3)
-                SwitchThumb.BackgroundColor3 = COLORS.TextSecondary
-                ToggleLabel.TextColor3 = COLORS.TextPrimary
-            end
+            TweenService:Create(SwitchTrack, MOTION.Medium, {
+                BackgroundColor3 = COLORS.Border
+            }):Play()
+            TweenService:Create(SwitchTrack:FindFirstChild("UIStroke"), MOTION.Medium, {
+                Color = COLORS.BorderHover
+            }):Play()
+            TweenService:Create(SwitchThumb, MOTION.Medium, {
+                Position = UDim2.new(0, 2, 0, 2),
+                BackgroundColor3 = COLORS.TextPrimary
+            }):Play()
         end
     end
     
-    updateToggle(false)
+    updateToggle()
     
     ToggleButton.MouseButton1Click:Connect(function()
         toggled = not toggled
-        CreateRipple(ToggleFrame, toggled and COLORS.Primary or COLORS.TextSecondary)
-        updateToggle(true)
+        updateToggle()
         if config.Callback then
             config.Callback(toggled)
         end
     end)
     
-    -- Enhanced hover effects
+    -- GitHub-style hover effects
     ToggleFrame.MouseEnter:Connect(function()
         TweenService:Create(ToggleFrame, MOTION.Fast, {
             BackgroundColor3 = COLORS.SurfaceHover
         }):Play()
         TweenService:Create(ToggleFrame:FindFirstChild("UIStroke"), MOTION.Fast, {
-            Color = COLORS.BorderHover,
-            Thickness = 1.5
+            Color = COLORS.BorderHover
         }):Play()
     end)
     
     ToggleFrame.MouseLeave:Connect(function()
         TweenService:Create(ToggleFrame, MOTION.Fast, {
-            BackgroundColor3 = COLORS.SurfaceCard
+            BackgroundColor3 = COLORS.Surface
         }):Play()
         TweenService:Create(ToggleFrame:FindFirstChild("UIStroke"), MOTION.Fast, {
-            Color = COLORS.Border,
-            Thickness = 1
+            Color = COLORS.Border
         }):Play()
     end)
     
@@ -582,44 +404,57 @@ end
 function Tab:CreateSlider(config)
     local SliderFrame = Instance.new("Frame")
     SliderFrame.Name = "SliderFrame_" .. (config.Name or "Slider")
-    SliderFrame.Size = UDim2.new(1, 0, 0, 70)
+    SliderFrame.Size = UDim2.new(1, 0, 0, 56)
     SliderFrame.BackgroundColor3 = COLORS.Surface
     SliderFrame.BorderSizePixel = 0
     SliderFrame.Parent = self.Content
     
-    CreateCorner(RADIUS.LG).Parent = SliderFrame
+    CreateCorner(RADIUS.SM).Parent = SliderFrame
     CreateStroke(1, COLORS.Border).Parent = SliderFrame
     CreatePadding(SPACING.LG).Parent = SliderFrame
     
+    -- Header with label and value
+    local HeaderFrame = Instance.new("Frame")
+    HeaderFrame.Size = UDim2.new(1, 0, 0, 16)
+    HeaderFrame.BackgroundTransparency = 1
+    HeaderFrame.Parent = SliderFrame
+    
     local SliderLabel = Instance.new("TextLabel")
-    SliderLabel.Size = UDim2.new(1, -60, 0, 20)
+    SliderLabel.Size = UDim2.new(1, -50, 1, 0)
     SliderLabel.BackgroundTransparency = 1
     SliderLabel.Text = config.Name or "Slider"
     SliderLabel.TextColor3 = COLORS.TextPrimary
-    SliderLabel.TextSize = 13
+    SliderLabel.TextSize = 12
     SliderLabel.Font = FONTS.Medium
     SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
     SliderLabel.TextYAlignment = Enum.TextYAlignment.Center
-    SliderLabel.Parent = SliderFrame
+    SliderLabel.Parent = HeaderFrame
     
     local ValueLabel = Instance.new("TextLabel")
-    ValueLabel.Size = UDim2.new(0, 60, 0, 20)
-    ValueLabel.Position = UDim2.new(1, -60, 0, 0)
+    ValueLabel.Size = UDim2.new(0, 50, 1, 0)
+    ValueLabel.Position = UDim2.new(1, -50, 0, 0)
     ValueLabel.BackgroundTransparency = 1
     ValueLabel.Text = tostring(config.CurrentValue or config.Range[1]) .. (config.Suffix or "")
     ValueLabel.TextColor3 = COLORS.Primary
-    ValueLabel.TextSize = 12
+    ValueLabel.TextSize = 11
     ValueLabel.Font = FONTS.SemiBold
     ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
     ValueLabel.TextYAlignment = Enum.TextYAlignment.Center
-    ValueLabel.Parent = SliderFrame
+    ValueLabel.Parent = HeaderFrame
+    
+    -- GitHub-style slider track
+    local SliderContainer = Instance.new("Frame")
+    SliderContainer.Size = UDim2.new(1, 0, 0, 20)
+    SliderContainer.Position = UDim2.new(0, 0, 1, -20)
+    SliderContainer.BackgroundTransparency = 1
+    SliderContainer.Parent = SliderFrame
     
     local SliderTrack = Instance.new("Frame")
-    SliderTrack.Size = UDim2.new(1, 0, 0, 6)
-    SliderTrack.Position = UDim2.new(0, 0, 1, -18)
+    SliderTrack.Size = UDim2.new(1, 0, 0, 4)
+    SliderTrack.Position = UDim2.new(0, 0, 0.5, -2)
     SliderTrack.BackgroundColor3 = COLORS.Border
     SliderTrack.BorderSizePixel = 0
-    SliderTrack.Parent = SliderFrame
+    SliderTrack.Parent = SliderContainer
     
     CreateCorner(RADIUS.SM).Parent = SliderTrack
     
@@ -631,22 +466,25 @@ function Tab:CreateSlider(config)
     
     CreateCorner(RADIUS.SM).Parent = SliderFill
     
+    -- GitHub-style thumb (more minimal)
     local SliderThumb = Instance.new("Frame")
-    SliderThumb.Size = UDim2.new(0, 16, 0, 16)
-    SliderThumb.Position = UDim2.new(0, -8, 0.5, -8)
-    SliderThumb.BackgroundColor3 = COLORS.TextPrimary
+    SliderThumb.Size = UDim2.new(0, 12, 0, 12)
+    SliderThumb.Position = UDim2.new(0, -6, 0.5, -6)
+    SliderThumb.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     SliderThumb.BorderSizePixel = 0
-    SliderThumb.ZIndex = 2
+    SliderThumb.ZIndex = 3
     SliderThumb.Parent = SliderFill
     
     CreateCorner(RADIUS.FULL).Parent = SliderThumb
-    CreateShadow(6, 0.2).Parent = SliderThumb
+    CreateStroke(2, COLORS.Primary).Parent = SliderThumb
+    CreateShadow(3, 0.2).Parent = SliderThumb
     
     local SliderInput = Instance.new("TextButton")
     SliderInput.Size = UDim2.new(1, 0, 1, 0)
     SliderInput.BackgroundTransparency = 1
     SliderInput.Text = ""
-    SliderInput.Parent = SliderTrack
+    SliderInput.ZIndex = 4
+    SliderInput.Parent = SliderContainer
     
     local dragging = false
     local range = config.Range or {0, 100}
@@ -685,9 +523,14 @@ function Tab:CreateSlider(config)
     SliderInput.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = true
+            
+            -- GitHub-style active state
             TweenService:Create(SliderThumb, MOTION.Fast, {
-                Size = UDim2.new(0, 20, 0, 20),
-                Position = UDim2.new(0, -10, 0.5, -10)
+                Size = UDim2.new(0, 16, 0, 16),
+                Position = UDim2.new(0, -8, 0.5, -8)
+            }):Play()
+            TweenService:Create(SliderThumb:FindFirstChild("UIStroke"), MOTION.Fast, {
+                Thickness = 3
             }):Play()
             
             local relativeX = math.clamp((input.Position.X - SliderTrack.AbsolutePosition.X) / SliderTrack.AbsoluteSize.X, 0, 1)
@@ -702,13 +545,16 @@ function Tab:CreateSlider(config)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = false
             TweenService:Create(SliderThumb, MOTION.Fast, {
-                Size = UDim2.new(0, 16, 0, 16),
-                Position = UDim2.new(0, -8, 0.5, -8)
+                Size = UDim2.new(0, 12, 0, 12),
+                Position = UDim2.new(0, -6, 0.5, -6)
+            }):Play()
+            TweenService:Create(SliderThumb:FindFirstChild("UIStroke"), MOTION.Fast, {
+                Thickness = 2
             }):Play()
         end
     end)
     
-    -- Hover effects
+    -- GitHub-style hover effects
     SliderFrame.MouseEnter:Connect(function()
         TweenService:Create(SliderFrame, MOTION.Fast, {
             BackgroundColor3 = COLORS.SurfaceHover
@@ -716,6 +562,12 @@ function Tab:CreateSlider(config)
         TweenService:Create(SliderFrame:FindFirstChild("UIStroke"), MOTION.Fast, {
             Color = COLORS.BorderHover
         }):Play()
+        if not dragging then
+            TweenService:Create(SliderThumb, MOTION.Fast, {
+                Size = UDim2.new(0, 14, 0, 14),
+                Position = UDim2.new(0, -7, 0.5, -7)
+            }):Play()
+        end
     end)
     
     SliderFrame.MouseLeave:Connect(function()
@@ -725,6 +577,10 @@ function Tab:CreateSlider(config)
             }):Play()
             TweenService:Create(SliderFrame:FindFirstChild("UIStroke"), MOTION.Fast, {
                 Color = COLORS.Border
+            }):Play()
+            TweenService:Create(SliderThumb, MOTION.Fast, {
+                Size = UDim2.new(0, 12, 0, 12),
+                Position = UDim2.new(0, -6, 0.5, -6)
             }):Play()
         end
     end)
@@ -737,18 +593,18 @@ end
 function Tab:CreateDropdown(config)
     local DropdownFrame = Instance.new("Frame")
     DropdownFrame.Name = "DropdownFrame_" .. (config.Name or "Dropdown")
-    DropdownFrame.Size = UDim2.new(1, 0, 0, 40)
+    DropdownFrame.Size = UDim2.new(1, 0, 0, 32)
     DropdownFrame.BackgroundColor3 = COLORS.Surface
     DropdownFrame.BorderSizePixel = 0
     DropdownFrame.ClipsDescendants = true
     DropdownFrame.Parent = self.Content
     
-    CreateCorner(RADIUS.LG).Parent = DropdownFrame
+    CreateCorner(RADIUS.SM).Parent = DropdownFrame
     CreateStroke(1, COLORS.Border).Parent = DropdownFrame
     CreatePadding(SPACING.LG).Parent = DropdownFrame
     
     local DropdownButton = Instance.new("TextButton")
-    DropdownButton.Size = UDim2.new(1, 0, 0, 40)
+    DropdownButton.Size = UDim2.new(1, 0, 0, 32)
     DropdownButton.BackgroundTransparency = 1
     DropdownButton.Text = ""
     DropdownButton.Parent = DropdownFrame
@@ -758,36 +614,40 @@ function Tab:CreateDropdown(config)
     DropdownText.BackgroundTransparency = 1
     DropdownText.Text = config.CurrentOption or config.Options[1] or "Select option..."
     DropdownText.TextColor3 = COLORS.TextPrimary
-    DropdownText.TextSize = 13
+    DropdownText.TextSize = 12
     DropdownText.Font = FONTS.Medium
     DropdownText.TextXAlignment = Enum.TextXAlignment.Left
     DropdownText.TextYAlignment = Enum.TextYAlignment.Center
     DropdownText.Parent = DropdownButton
     
+    -- GitHub-style chevron icon
     local DropdownIcon = Instance.new("TextLabel")
-    DropdownIcon.Size = UDim2.new(0, 16, 0, 16)
-    DropdownIcon.Position = UDim2.new(1, -16, 0.5, -8)
+    DropdownIcon.Size = UDim2.new(0, 14, 0, 14)
+    DropdownIcon.Position = UDim2.new(1, -14, 0.5, -7)
     DropdownIcon.BackgroundTransparency = 1
-    DropdownIcon.Text = "▼"
+    DropdownIcon.Text = "⌄"
     DropdownIcon.TextColor3 = COLORS.TextTertiary
-    DropdownIcon.TextSize = 10
+    DropdownIcon.TextSize = 12
     DropdownIcon.Font = FONTS.Regular
     DropdownIcon.TextXAlignment = Enum.TextXAlignment.Center
     DropdownIcon.TextYAlignment = Enum.TextYAlignment.Center
     DropdownIcon.Parent = DropdownButton
     
+    -- GitHub-style dropdown menu
     local OptionsContainer = Instance.new("Frame")
     OptionsContainer.Size = UDim2.new(1, 0, 0, 0)
-    OptionsContainer.Position = UDim2.new(0, 0, 0, 40)
+    OptionsContainer.Position = UDim2.new(0, 0, 0, 34)
     OptionsContainer.BackgroundColor3 = COLORS.Surface
     OptionsContainer.BorderSizePixel = 0
     OptionsContainer.ClipsDescendants = true
+    OptionsContainer.ZIndex = 10
     OptionsContainer.Parent = DropdownFrame
     
-    CreateCorner(RADIUS.LG).Parent = OptionsContainer
-    CreateStroke(1, COLORS.Border).Parent = OptionsContainer
+    CreateCorner(RADIUS.SM).Parent = OptionsContainer
+    CreateStroke(1, COLORS.BorderHover).Parent = OptionsContainer
+    CreateShadow(4, 0.1).Parent = OptionsContainer
     
-    local OptionsLayout = CreateListLayout(Enum.FillDirection.Vertical, 0)
+    local OptionsLayout = CreateListLayout(Enum.FillDirection.Vertical, 1)
     OptionsLayout.Parent = OptionsContainer
     
     local isOpen = false
@@ -795,21 +655,22 @@ function Tab:CreateDropdown(config)
     
     local function createOption(option)
         local OptionButton = Instance.new("TextButton")
-        OptionButton.Size = UDim2.new(1, 0, 0, 36)
+        OptionButton.Size = UDim2.new(1, 0, 0, 28)
         OptionButton.BackgroundTransparency = 1
         OptionButton.Text = option
         OptionButton.TextColor3 = COLORS.TextSecondary
-        OptionButton.TextSize = 12
+        OptionButton.TextSize = 11
         OptionButton.Font = FONTS.Regular
         OptionButton.TextXAlignment = Enum.TextXAlignment.Left
         OptionButton.Parent = OptionsContainer
         
-        CreatePadding(SPACING.LG).Parent = OptionButton
+        CreatePadding(SPACING.MD).Parent = OptionButton
         
+        -- GitHub-style option hover
         OptionButton.MouseEnter:Connect(function()
             TweenService:Create(OptionButton, MOTION.Fast, {
-                BackgroundColor3 = COLORS.SurfaceHover,
-                BackgroundTransparency = 0
+                BackgroundColor3 = COLORS.Primary,
+                BackgroundTransparency = 0.9
             }):Play()
             TweenService:Create(OptionButton, MOTION.Fast, {
                 TextColor3 = COLORS.TextPrimary
@@ -831,7 +692,7 @@ function Tab:CreateDropdown(config)
             isOpen = false
             
             TweenService:Create(DropdownFrame, MOTION.Medium, {
-                Size = UDim2.new(1, 0, 0, 40)
+                Size = UDim2.new(1, 0, 0, 32)
             }):Play()
             
             TweenService:Create(OptionsContainer, MOTION.Medium, {
@@ -857,10 +718,10 @@ function Tab:CreateDropdown(config)
         
         if isOpen then
             local optionCount = #(config.Options or {})
-            local containerHeight = math.min(optionCount * 36, 180)
+            local containerHeight = math.min(optionCount * 29, 140) -- 28px per option + 1px spacing
             
             TweenService:Create(DropdownFrame, MOTION.Medium, {
-                Size = UDim2.new(1, 0, 0, 40 + containerHeight)
+                Size = UDim2.new(1, 0, 0, 32 + containerHeight + 2)
             }):Play()
             
             TweenService:Create(OptionsContainer, MOTION.Medium, {
@@ -872,7 +733,7 @@ function Tab:CreateDropdown(config)
             }):Play()
         else
             TweenService:Create(DropdownFrame, MOTION.Medium, {
-                Size = UDim2.new(1, 0, 0, 40)
+                Size = UDim2.new(1, 0, 0, 32)
             }):Play()
             
             TweenService:Create(OptionsContainer, MOTION.Medium, {
@@ -885,7 +746,7 @@ function Tab:CreateDropdown(config)
         end
     end)
     
-    -- Hover effects
+    -- GitHub-style hover effects
     DropdownFrame.MouseEnter:Connect(function()
         if not isOpen then
             TweenService:Create(DropdownFrame, MOTION.Fast, {
@@ -1078,7 +939,7 @@ function FischnishedUI:CreateWindow(config)
     ScreenGui.Parent = CoreGui
     Window.Gui = ScreenGui
     
-    -- Create main frame with premium styling
+    -- Create main frame (GitHub-inspired)
     local MainFrame = Instance.new("Frame")
     MainFrame.Name = "MainFrame"
     MainFrame.Size = Window.Size
@@ -1089,208 +950,121 @@ function FischnishedUI:CreateWindow(config)
     MainFrame.Parent = ScreenGui
     Window.MainFrame = MainFrame
     
-    CreateCorner(RADIUS.XXL).Parent = MainFrame
-    CreateStroke(1, COLORS.BorderFocus).Parent = MainFrame
-    CreateShadow(12, 0.5, 4).Parent = MainFrame
+    CreateCorner(RADIUS.MD).Parent = MainFrame
+    CreateStroke(1, COLORS.Border).Parent = MainFrame
+    CreateShadow(6, 0.2).Parent = MainFrame
     
-    -- Premium glass overlay
-    CreateGlassEffect(MainFrame, 0.95)
-    
-    -- Enhanced background gradient
-    local mainGradient = CreateAdvancedGradient({
-        COLORS.Background,
-        COLORS.Surface,
-        COLORS.Background
-    }, 45)
-    mainGradient.Parent = MainFrame
-    
-    -- Premium title bar with enhanced styling
+    -- GitHub-style title bar
     local TitleBar = Instance.new("Frame")
     TitleBar.Name = "TitleBar"
-    TitleBar.Size = UDim2.new(1, 0, 0, 64)
+    TitleBar.Size = UDim2.new(1, 0, 0, 48)
     TitleBar.Position = UDim2.new(0, 0, 0, 0)
-    TitleBar.BackgroundColor3 = COLORS.SurfaceCard
+    TitleBar.BackgroundColor3 = COLORS.Surface
     TitleBar.BorderSizePixel = 0
     TitleBar.Parent = MainFrame
     
-    CreateCorner(RADIUS.XXL).Parent = TitleBar
-    CreateStroke(1, COLORS.BorderActive).Parent = TitleBar
-    CreatePadding(SPACING.XXL).Parent = TitleBar
+    CreateCorner(RADIUS.MD).Parent = TitleBar
+    CreateStroke(1, COLORS.Border).Parent = TitleBar
+    CreatePadding(SPACING.LG).Parent = TitleBar
     
-    -- Title bar gradient
-    local titleGradient = CreateAdvancedGradient({
-        COLORS.SurfaceCard,
-        COLORS.Surface,
-        COLORS.SurfaceCard
-    }, 0)
-    titleGradient.Parent = TitleBar
-    
-    -- Corner fix for bottom of title bar
+    -- Title bar corner fix
     local titleCornerFix = Instance.new("Frame")
-    titleCornerFix.Size = UDim2.new(1, 2, 0, RADIUS.XXL)
-    titleCornerFix.Position = UDim2.new(0, -1, 1, -RADIUS.XXL)
-    titleCornerFix.BackgroundColor3 = COLORS.SurfaceCard
+    titleCornerFix.Size = UDim2.new(1, 0, 0, RADIUS.MD)
+    titleCornerFix.Position = UDim2.new(0, 0, 1, -RADIUS.MD)
+    titleCornerFix.BackgroundColor3 = COLORS.Surface
     titleCornerFix.BorderSizePixel = 0
     titleCornerFix.Parent = TitleBar
     
-    -- Enhanced title text with subtitle support
+    -- GitHub-style title text
     local TitleText = Instance.new("TextLabel")
     TitleText.Name = "TitleText"
-    TitleText.Size = UDim2.new(1, -120, 0.6, 0)
+    TitleText.Size = UDim2.new(1, -80, 1, 0)
     TitleText.Position = UDim2.new(0, 0, 0, 0)
     TitleText.BackgroundTransparency = 1
     TitleText.Text = Window.Name
     TitleText.TextColor3 = COLORS.TextPrimary
-    TitleText.TextSize = 18
+    TitleText.TextSize = 14
     TitleText.Font = FONTS.SemiBold
     TitleText.TextXAlignment = Enum.TextXAlignment.Left
     TitleText.TextYAlignment = Enum.TextYAlignment.Center
     TitleText.Parent = TitleBar
     
-    -- Optional subtitle
-    local SubtitleText = Instance.new("TextLabel")
-    SubtitleText.Name = "SubtitleText"
-    SubtitleText.Size = UDim2.new(1, -120, 0.4, 0)
-    SubtitleText.Position = UDim2.new(0, 0, 0.6, 0)
-    SubtitleText.BackgroundTransparency = 1
-    SubtitleText.Text = config.Subtitle or "Premium UI Library"
-    SubtitleText.TextColor3 = COLORS.TextTertiary
-    SubtitleText.TextSize = 12
-    SubtitleText.Font = FONTS.Regular
-    SubtitleText.TextXAlignment = Enum.TextXAlignment.Left
-    SubtitleText.TextYAlignment = Enum.TextYAlignment.Top
-    SubtitleText.Parent = TitleBar
-    
-    -- Premium close button with enhanced styling
+    -- GitHub-style close button
     local CloseButton = Instance.new("TextButton")
     CloseButton.Name = "CloseButton"
-    CloseButton.Size = UDim2.new(0, 36, 0, 36)
-    CloseButton.Position = UDim2.new(1, -36, 0.5, -18)
-    CloseButton.BackgroundColor3 = Color3.fromRGB(248, 113, 113)
+    CloseButton.Size = UDim2.new(0, 28, 0, 28)
+    CloseButton.Position = UDim2.new(1, -28, 0.5, -14)
+    CloseButton.BackgroundColor3 = COLORS.Surface
     CloseButton.BorderSizePixel = 0
-    CloseButton.Text = "✕"
-    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.Text = "×"
+    CloseButton.TextColor3 = COLORS.TextSecondary
     CloseButton.TextSize = 14
     CloseButton.Font = FONTS.SemiBold
     CloseButton.Parent = TitleBar
     
-    CreateCorner(RADIUS.LG).Parent = CloseButton
-    CreateShadow(4, 0.3, 2).Parent = CloseButton
+    CreateCorner(RADIUS.SM).Parent = CloseButton
+    CreateStroke(1, COLORS.Border).Parent = CloseButton
     
-    -- Minimize button
-    local MinimizeButton = Instance.new("TextButton")
-    MinimizeButton.Name = "MinimizeButton"
-    MinimizeButton.Size = UDim2.new(0, 36, 0, 36)
-    MinimizeButton.Position = UDim2.new(1, -80, 0.5, -18)
-    MinimizeButton.BackgroundColor3 = Color3.fromRGB(251, 191, 36)
-    MinimizeButton.BorderSizePixel = 0
-    MinimizeButton.Text = "−"
-    MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    MinimizeButton.TextSize = 16
-    MinimizeButton.Font = FONTS.SemiBold
-    MinimizeButton.Parent = TitleBar
-    
-    CreateCorner(RADIUS.LG).Parent = MinimizeButton
-    CreateShadow(4, 0.3, 2).Parent = MinimizeButton
-    
-    -- Enhanced button hover effects
+    -- GitHub-style close button hover effects
     CloseButton.MouseEnter:Connect(function()
         TweenService:Create(CloseButton, MOTION.Fast, {
-            BackgroundColor3 = Color3.fromRGB(239, 68, 68),
-            Size = UDim2.new(0, 38, 0, 38),
-            Position = UDim2.new(1, -38, 0.5, -19)
+            BackgroundColor3 = COLORS.Error,
+            TextColor3 = Color3.fromRGB(255, 255, 255)
+        }):Play()
+        TweenService:Create(CloseButton:FindFirstChild("UIStroke"), MOTION.Fast, {
+            Color = COLORS.Error
         }):Play()
     end)
     
     CloseButton.MouseLeave:Connect(function()
         TweenService:Create(CloseButton, MOTION.Fast, {
-            BackgroundColor3 = Color3.fromRGB(248, 113, 113),
-            Size = UDim2.new(0, 36, 0, 36),
-            Position = UDim2.new(1, -36, 0.5, -18)
+            BackgroundColor3 = COLORS.Surface,
+            TextColor3 = COLORS.TextSecondary
         }):Play()
-    end)
-    
-    MinimizeButton.MouseEnter:Connect(function()
-        TweenService:Create(MinimizeButton, MOTION.Fast, {
-            BackgroundColor3 = Color3.fromRGB(245, 158, 11),
-            Size = UDim2.new(0, 38, 0, 38),
-            Position = UDim2.new(1, -82, 0.5, -19)
-        }):Play()
-    end)
-    
-    MinimizeButton.MouseLeave:Connect(function()
-        TweenService:Create(MinimizeButton, MOTION.Fast, {
-            BackgroundColor3 = Color3.fromRGB(251, 191, 36),
-            Size = UDim2.new(0, 36, 0, 36),
-            Position = UDim2.new(1, -80, 0.5, -18)
+        TweenService:Create(CloseButton:FindFirstChild("UIStroke"), MOTION.Fast, {
+            Color = COLORS.Border
         }):Play()
     end)
     
     CloseButton.MouseButton1Click:Connect(function()
         CreateRipple(CloseButton, Color3.fromRGB(255, 255, 255))
-        TweenService:Create(MainFrame, MOTION.Silk, {
+        TweenService:Create(MainFrame, MOTION.Spring, {
             Size = UDim2.new(0, 0, 0, 0),
-            Position = UDim2.new(0.5, 0, 0.5, 0),
-            Rotation = 5
+            Position = UDim2.new(0.5, 0, 0.5, 0)
         }):Play()
-        TweenService:Create(MainFrame, MOTION.Smooth, {
-            BackgroundTransparency = 1
-        }):Play()
-        wait(0.5)
+        wait(0.4)
         ScreenGui:Destroy()
     end)
     
-    MinimizeButton.MouseButton1Click:Connect(function()
-        CreateRipple(MinimizeButton, Color3.fromRGB(255, 255, 255))
-        local isMinimized = MainFrame.Size.Y.Offset <= 100
-        if isMinimized then
-            TweenService:Create(MainFrame, MOTION.Bounce, {
-                Size = Window.Size
-            }):Play()
-        else
-            TweenService:Create(MainFrame, MOTION.Spring, {
-                Size = UDim2.new(Window.Size.X.Scale, Window.Size.X.Offset, 0, 64)
-            }):Play()
-        end
-    end)
-    
-    -- Content area with refined layout
+    -- Content area
     local ContentFrame = Instance.new("Frame")
     ContentFrame.Name = "ContentFrame"
-    ContentFrame.Size = UDim2.new(1, 0, 1, -64)
-    ContentFrame.Position = UDim2.new(0, 0, 0, 64)
+    ContentFrame.Size = UDim2.new(1, 0, 1, -48)
+    ContentFrame.Position = UDim2.new(0, 0, 0, 48)
     ContentFrame.BackgroundTransparency = 1
     ContentFrame.BorderSizePixel = 0
     ContentFrame.Parent = MainFrame
     
-    -- Premium tab container with enhanced styling
+    -- GitHub-style tab container
     local TabContainer = Instance.new("Frame")
     TabContainer.Name = "TabContainer"
-    TabContainer.Size = UDim2.new(0, 220, 1, 0)
+    TabContainer.Size = UDim2.new(0, 180, 1, 0)
     TabContainer.Position = UDim2.new(0, 0, 0, 0)
-    TabContainer.BackgroundColor3 = COLORS.SurfaceCard
+    TabContainer.BackgroundColor3 = COLORS.Surface
     TabContainer.BorderSizePixel = 0
     TabContainer.Parent = ContentFrame
     
-    CreateStroke(1, COLORS.BorderActive).Parent = TabContainer
-    CreatePadding(SPACING.XL).Parent = TabContainer
+    CreateStroke(1, COLORS.Border).Parent = TabContainer
+    CreatePadding(SPACING.MD).Parent = TabContainer
     
-    -- Tab container gradient
-    local tabGradient = CreateAdvancedGradient({
-        COLORS.SurfaceCard,
-        COLORS.Surface,
-        COLORS.SurfaceCard
-    }, 180)
-    tabGradient.Parent = TabContainer
-    
-    local TabList = CreateListLayout(Enum.FillDirection.Vertical, SPACING.MD)
+    local TabList = CreateListLayout(Enum.FillDirection.Vertical, SPACING.XS)
     TabList.Parent = TabContainer
     
-    -- Enhanced tab content area
+    -- Tab content area
     local TabContentFrame = Instance.new("Frame")
     TabContentFrame.Name = "TabContentFrame"
-    TabContentFrame.Size = UDim2.new(1, -220, 1, 0)
-    TabContentFrame.Position = UDim2.new(0, 220, 0, 0)
+    TabContentFrame.Size = UDim2.new(1, -180, 1, 0)
+    TabContentFrame.Position = UDim2.new(0, 180, 0, 0)
     TabContentFrame.BackgroundTransparency = 1
     TabContentFrame.BorderSizePixel = 0
     TabContentFrame.Parent = ContentFrame
@@ -1346,21 +1120,21 @@ function FischnishedUI:CreateWindow(config)
             Window = self
         }
         
-        -- Create tab button
+        -- Create GitHub-style tab button
         local TabButton = Instance.new("TextButton")
         TabButton.Name = "TabButton_" .. TabInstance.Name
-        TabButton.Size = UDim2.new(1, 0, 0, 40)
+        TabButton.Size = UDim2.new(1, 0, 0, 32)
         TabButton.BackgroundColor3 = COLORS.Surface
         TabButton.BorderSizePixel = 0
         TabButton.Text = TabInstance.Name
         TabButton.TextColor3 = COLORS.TextSecondary
-        TabButton.TextSize = 13
+        TabButton.TextSize = 11
         TabButton.Font = FONTS.Medium
         TabButton.TextXAlignment = Enum.TextXAlignment.Left
         TabButton.Parent = TabContainer
         
-        CreateCorner(RADIUS.MD).Parent = TabButton
-        CreatePadding(SPACING.LG).Parent = TabButton
+        CreateCorner(RADIUS.SM).Parent = TabButton
+        CreatePadding(SPACING.MD).Parent = TabButton
         TabInstance.Button = TabButton
         
         -- Create tab content
@@ -1377,15 +1151,15 @@ function FischnishedUI:CreateWindow(config)
         TabContent.Visible = false
         TabContent.Parent = TabContentFrame
         
-        CreatePadding(SPACING.XL).Parent = TabContent
+        CreatePadding(SPACING.LG).Parent = TabContent
         TabInstance.Content = TabContent
         
-        local ContentLayout = CreateListLayout(Enum.FillDirection.Vertical, SPACING.LG)
+        local ContentLayout = CreateListLayout(Enum.FillDirection.Vertical, SPACING.MD)
         ContentLayout.Parent = TabContent
         
         -- Auto-resize canvas
         ContentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-            TabContent.CanvasSize = UDim2.new(0, 0, 0, ContentLayout.AbsoluteContentSize.Y + SPACING.XL * 2)
+            TabContent.CanvasSize = UDim2.new(0, 0, 0, ContentLayout.AbsoluteContentSize.Y + SPACING.LG * 2)
         end)
         
         -- Tab selection logic
@@ -1458,30 +1232,14 @@ function FischnishedUI:CreateWindow(config)
         }):Play()
     end
     
-    -- Premium entrance animation with sophisticated effects
+    -- Entrance animation
     MainFrame.Size = UDim2.new(0, 0, 0, 0)
     MainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    MainFrame.Rotation = -5
-    MainFrame.BackgroundTransparency = 1
     
-    -- Multi-stage entrance animation
-    local stage1 = TweenService:Create(MainFrame, MOTION.Silk, {
-        Size = UDim2.new(Window.Size.X.Scale * 0.8, Window.Size.X.Offset * 0.8, Window.Size.Y.Scale * 0.8, Window.Size.Y.Offset * 0.8),
-        Position = UDim2.new(0.5, -Window.Size.X.Offset*0.4, 0.5, -Window.Size.Y.Offset*0.4),
-        Rotation = 0,
-        BackgroundTransparency = 0.3
-    })
-    
-    local stage2 = TweenService:Create(MainFrame, MOTION.Elastic, {
+    TweenService:Create(MainFrame, MOTION.Bounce, {
         Size = Window.Size,
-        Position = UDim2.new(0.5, -Window.Size.X.Offset/2, 0.5, -Window.Size.Y.Offset/2),
-        BackgroundTransparency = 0
-    })
-    
-    stage1:Play()
-    stage1.Completed:Connect(function()
-        stage2:Play()
-    end)
+        Position = UDim2.new(0.5, -Window.Size.X.Offset/2, 0.5, -Window.Size.Y.Offset/2)
+    }):Play()
     
     return Window
 end
