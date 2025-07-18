@@ -601,16 +601,24 @@ function Tab:CreateDropdown(config)
     
     CreateCorner(RADIUS.SM).Parent = DropdownFrame
     CreateStroke(1, COLORS.Border).Parent = DropdownFrame
-    CreatePadding(SPACING.LG).Parent = DropdownFrame
     
+    -- GitHub-style main dropdown button
     local DropdownButton = Instance.new("TextButton")
     DropdownButton.Size = UDim2.new(1, 0, 0, 32)
     DropdownButton.BackgroundTransparency = 1
     DropdownButton.Text = ""
     DropdownButton.Parent = DropdownFrame
     
+    CreatePadding(SPACING.LG).Parent = DropdownButton
+    
+    -- Main content container
+    local ContentContainer = Instance.new("Frame")
+    ContentContainer.Size = UDim2.new(1, 0, 1, 0)
+    ContentContainer.BackgroundTransparency = 1
+    ContentContainer.Parent = DropdownButton
+    
     local DropdownText = Instance.new("TextLabel")
-    DropdownText.Size = UDim2.new(1, -20, 1, 0)
+    DropdownText.Size = UDim2.new(1, -24, 1, 0)
     DropdownText.BackgroundTransparency = 1
     DropdownText.Text = config.CurrentOption or config.Options[1] or "Select option..."
     DropdownText.TextColor3 = COLORS.TextPrimary
@@ -618,77 +626,150 @@ function Tab:CreateDropdown(config)
     DropdownText.Font = FONTS.Medium
     DropdownText.TextXAlignment = Enum.TextXAlignment.Left
     DropdownText.TextYAlignment = Enum.TextYAlignment.Center
-    DropdownText.Parent = DropdownButton
+    DropdownText.TextTruncate = Enum.TextTruncate.AtEnd
+    DropdownText.Parent = ContentContainer
     
-    -- GitHub-style chevron icon
+    -- Enhanced GitHub-style chevron with better styling
+    local ChevronContainer = Instance.new("Frame")
+    ChevronContainer.Size = UDim2.new(0, 20, 0, 20)
+    ChevronContainer.Position = UDim2.new(1, -20, 0.5, -10)
+    ChevronContainer.BackgroundColor3 = COLORS.SurfaceHover
+    ChevronContainer.BorderSizePixel = 0
+    ChevronContainer.Parent = ContentContainer
+    
+    CreateCorner(RADIUS.SM).Parent = ChevronContainer
+    CreateStroke(1, COLORS.BorderHover).Parent = ChevronContainer
+    
     local DropdownIcon = Instance.new("TextLabel")
-    DropdownIcon.Size = UDim2.new(0, 14, 0, 14)
-    DropdownIcon.Position = UDim2.new(1, -14, 0.5, -7)
+    DropdownIcon.Size = UDim2.new(1, 0, 1, 0)
     DropdownIcon.BackgroundTransparency = 1
     DropdownIcon.Text = "⌄"
     DropdownIcon.TextColor3 = COLORS.TextTertiary
-    DropdownIcon.TextSize = 12
-    DropdownIcon.Font = FONTS.Regular
+    DropdownIcon.TextSize = 10
+    DropdownIcon.Font = FONTS.SemiBold
     DropdownIcon.TextXAlignment = Enum.TextXAlignment.Center
     DropdownIcon.TextYAlignment = Enum.TextYAlignment.Center
-    DropdownIcon.Parent = DropdownButton
+    DropdownIcon.Parent = ChevronContainer
     
-    -- GitHub-style dropdown menu
+    -- Enhanced dropdown menu with better positioning
     local OptionsContainer = Instance.new("Frame")
     OptionsContainer.Size = UDim2.new(1, 0, 0, 0)
-    OptionsContainer.Position = UDim2.new(0, 0, 0, 34)
+    OptionsContainer.Position = UDim2.new(0, 0, 0, 36)
     OptionsContainer.BackgroundColor3 = COLORS.Surface
     OptionsContainer.BorderSizePixel = 0
     OptionsContainer.ClipsDescendants = true
-    OptionsContainer.ZIndex = 10
+    OptionsContainer.ZIndex = 15
+    OptionsContainer.Visible = false
     OptionsContainer.Parent = DropdownFrame
     
     CreateCorner(RADIUS.SM).Parent = OptionsContainer
     CreateStroke(1, COLORS.BorderHover).Parent = OptionsContainer
-    CreateShadow(4, 0.1).Parent = OptionsContainer
+    CreateShadow(6, 0.15).Parent = OptionsContainer
+    
+    -- Scrollable options for long lists
+    local OptionsScrollFrame = Instance.new("ScrollingFrame")
+    OptionsScrollFrame.Size = UDim2.new(1, 0, 1, 0)
+    OptionsScrollFrame.BackgroundTransparency = 1
+    OptionsScrollFrame.BorderSizePixel = 0
+    OptionsScrollFrame.ScrollBarThickness = 4
+    OptionsScrollFrame.ScrollBarImageColor3 = COLORS.Primary
+    OptionsScrollFrame.ScrollBarImageTransparency = 0.7
+    OptionsScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+    OptionsScrollFrame.Parent = OptionsContainer
+    
+    CreatePadding(SPACING.XS).Parent = OptionsScrollFrame
     
     local OptionsLayout = CreateListLayout(Enum.FillDirection.Vertical, 1)
-    OptionsLayout.Parent = OptionsContainer
+    OptionsLayout.Parent = OptionsScrollFrame
     
     local isOpen = false
     local selectedOption = config.CurrentOption or config.Options[1]
+    local optionButtons = {}
     
-    local function createOption(option)
+    -- Auto-resize canvas
+    OptionsLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        OptionsScrollFrame.CanvasSize = UDim2.new(0, 0, 0, OptionsLayout.AbsoluteContentSize.Y + SPACING.XS * 2)
+    end)
+    
+    local function createOption(option, index)
         local OptionButton = Instance.new("TextButton")
         OptionButton.Size = UDim2.new(1, 0, 0, 28)
         OptionButton.BackgroundTransparency = 1
-        OptionButton.Text = option
-        OptionButton.TextColor3 = COLORS.TextSecondary
-        OptionButton.TextSize = 11
-        OptionButton.Font = FONTS.Regular
-        OptionButton.TextXAlignment = Enum.TextXAlignment.Left
-        OptionButton.Parent = OptionsContainer
+        OptionButton.Text = ""
+        OptionButton.LayoutOrder = index
+        OptionButton.Parent = OptionsScrollFrame
         
+        CreateCorner(RADIUS.XS).Parent = OptionButton
         CreatePadding(SPACING.MD).Parent = OptionButton
         
-        -- GitHub-style option hover
+        local OptionText = Instance.new("TextLabel")
+        OptionText.Size = UDim2.new(1, -20, 1, 0)
+        OptionText.BackgroundTransparency = 1
+        OptionText.Text = option
+        OptionText.TextColor3 = COLORS.TextSecondary
+        OptionText.TextSize = 11
+        OptionText.Font = FONTS.Regular
+        OptionText.TextXAlignment = Enum.TextXAlignment.Left
+        OptionText.TextYAlignment = Enum.TextYAlignment.Center
+        OptionText.TextTruncate = Enum.TextTruncate.AtEnd
+        OptionText.Parent = OptionButton
+        
+        -- Check mark for selected option
+        local CheckMark = Instance.new("TextLabel")
+        CheckMark.Size = UDim2.new(0, 16, 0, 16)
+        CheckMark.Position = UDim2.new(1, -16, 0.5, -8)
+        CheckMark.BackgroundTransparency = 1
+        CheckMark.Text = "✓"
+        CheckMark.TextColor3 = COLORS.Primary
+        CheckMark.TextSize = 10
+        CheckMark.Font = FONTS.SemiBold
+        CheckMark.TextXAlignment = Enum.TextXAlignment.Center
+        CheckMark.TextYAlignment = Enum.TextYAlignment.Center
+        CheckMark.Visible = option == selectedOption
+        CheckMark.Parent = OptionButton
+        
+        -- Enhanced hover effects
         OptionButton.MouseEnter:Connect(function()
             TweenService:Create(OptionButton, MOTION.Fast, {
                 BackgroundColor3 = COLORS.Primary,
-                BackgroundTransparency = 0.9
+                BackgroundTransparency = 0.92
             }):Play()
-            TweenService:Create(OptionButton, MOTION.Fast, {
+            TweenService:Create(OptionText, MOTION.Fast, {
                 TextColor3 = COLORS.TextPrimary
             }):Play()
+            if CheckMark.Visible then
+                TweenService:Create(CheckMark, MOTION.Fast, {
+                    TextColor3 = COLORS.TextPrimary
+                }):Play()
+            end
         end)
         
         OptionButton.MouseLeave:Connect(function()
             TweenService:Create(OptionButton, MOTION.Fast, {
                 BackgroundTransparency = 1
             }):Play()
-            TweenService:Create(OptionButton, MOTION.Fast, {
+            TweenService:Create(OptionText, MOTION.Fast, {
                 TextColor3 = COLORS.TextSecondary
             }):Play()
+            if CheckMark.Visible then
+                TweenService:Create(CheckMark, MOTION.Fast, {
+                    TextColor3 = COLORS.Primary
+                }):Play()
+            end
         end)
         
         OptionButton.MouseButton1Click:Connect(function()
+            -- Update selection
             selectedOption = option
             DropdownText.Text = option
+            
+            -- Update check marks
+            for _, btn in pairs(optionButtons) do
+                btn.CheckMark.Visible = false
+            end
+            CheckMark.Visible = true
+            
+            -- Close dropdown with animation
             isOpen = false
             
             TweenService:Create(DropdownFrame, MOTION.Medium, {
@@ -699,37 +780,75 @@ function Tab:CreateDropdown(config)
                 Size = UDim2.new(1, 0, 0, 0)
             }):Play()
             
+            -- Rotate chevron back
             TweenService:Create(DropdownIcon, MOTION.Medium, {
                 Rotation = 0
             }):Play()
+            TweenService:Create(ChevronContainer, MOTION.Medium, {
+                BackgroundColor3 = COLORS.SurfaceHover
+            }):Play()
+            
+            -- Hide container after animation
+            spawn(function()
+                wait(0.25)
+                if not isOpen then
+                    OptionsContainer.Visible = false
+                end
+            end)
             
             if config.Callback then
                 config.Callback(option)
             end
         end)
+        
+        -- Store reference
+        optionButtons[option] = {
+            Button = OptionButton,
+            Text = OptionText,
+            CheckMark = CheckMark
+        }
+        
+        return OptionButton
     end
     
-    for _, option in ipairs(config.Options or {}) do
-        createOption(option)
+    -- Create all options
+    for index, option in ipairs(config.Options or {}) do
+        createOption(option, index)
     end
     
+    -- Main dropdown toggle functionality
     DropdownButton.MouseButton1Click:Connect(function()
         isOpen = not isOpen
         
         if isOpen then
             local optionCount = #(config.Options or {})
-            local containerHeight = math.min(optionCount * 29, 140) -- 28px per option + 1px spacing
+            local maxHeight = 140 -- Maximum dropdown height
+            local optionHeight = 29 -- 28px per option + 1px spacing
+            local containerHeight = math.min(optionCount * optionHeight, maxHeight)
+            
+            OptionsContainer.Visible = true
             
             TweenService:Create(DropdownFrame, MOTION.Medium, {
-                Size = UDim2.new(1, 0, 0, 32 + containerHeight + 2)
+                Size = UDim2.new(1, 0, 0, 32 + containerHeight + 4)
             }):Play()
             
             TweenService:Create(OptionsContainer, MOTION.Medium, {
                 Size = UDim2.new(1, 0, 0, containerHeight)
             }):Play()
             
+            -- Animate chevron
             TweenService:Create(DropdownIcon, MOTION.Medium, {
                 Rotation = 180
+            }):Play()
+            TweenService:Create(ChevronContainer, MOTION.Medium, {
+                BackgroundColor3 = COLORS.Primary,
+                BackgroundTransparency = 0.1
+            }):Play()
+            TweenService:Create(ChevronContainer:FindFirstChild("UIStroke"), MOTION.Medium, {
+                Color = COLORS.Primary
+            }):Play()
+            TweenService:Create(DropdownIcon, MOTION.Medium, {
+                TextColor3 = COLORS.Primary
             }):Play()
         else
             TweenService:Create(DropdownFrame, MOTION.Medium, {
@@ -740,13 +859,32 @@ function Tab:CreateDropdown(config)
                 Size = UDim2.new(1, 0, 0, 0)
             }):Play()
             
+            -- Reset chevron
             TweenService:Create(DropdownIcon, MOTION.Medium, {
                 Rotation = 0
             }):Play()
+            TweenService:Create(ChevronContainer, MOTION.Medium, {
+                BackgroundColor3 = COLORS.SurfaceHover,
+                BackgroundTransparency = 0
+            }):Play()
+            TweenService:Create(ChevronContainer:FindFirstChild("UIStroke"), MOTION.Medium, {
+                Color = COLORS.BorderHover
+            }):Play()
+            TweenService:Create(DropdownIcon, MOTION.Medium, {
+                TextColor3 = COLORS.TextTertiary
+            }):Play()
+            
+            -- Hide container after animation
+            spawn(function()
+                wait(0.25)
+                if not isOpen then
+                    OptionsContainer.Visible = false
+                end
+            end)
         end
     end)
     
-    -- GitHub-style hover effects
+    -- Enhanced hover effects for main dropdown
     DropdownFrame.MouseEnter:Connect(function()
         if not isOpen then
             TweenService:Create(DropdownFrame, MOTION.Fast, {
@@ -754,6 +892,9 @@ function Tab:CreateDropdown(config)
             }):Play()
             TweenService:Create(DropdownFrame:FindFirstChild("UIStroke"), MOTION.Fast, {
                 Color = COLORS.BorderHover
+            }):Play()
+            TweenService:Create(ChevronContainer, MOTION.Fast, {
+                BackgroundColor3 = COLORS.SurfaceActive
             }):Play()
         end
     end)
@@ -766,8 +907,74 @@ function Tab:CreateDropdown(config)
             TweenService:Create(DropdownFrame:FindFirstChild("UIStroke"), MOTION.Fast, {
                 Color = COLORS.Border
             }):Play()
+            TweenService:Create(ChevronContainer, MOTION.Fast, {
+                BackgroundColor3 = COLORS.SurfaceHover
+            }):Play()
         end
     end)
+    
+    -- Click outside to close (enhanced)
+    local function closeOnClickOutside()
+        local mouse = game.Players.LocalPlayer:GetMouse()
+        local connection
+        connection = mouse.Button1Down:Connect(function()
+            if isOpen then
+                local hit = mouse.Hit
+                if hit and not DropdownFrame:IsAncestorOf(mouse.Target) and mouse.Target ~= DropdownFrame then
+                    isOpen = false
+                    
+                    TweenService:Create(DropdownFrame, MOTION.Medium, {
+                        Size = UDim2.new(1, 0, 0, 32)
+                    }):Play()
+                    
+                    TweenService:Create(OptionsContainer, MOTION.Medium, {
+                        Size = UDim2.new(1, 0, 0, 0)
+                    }):Play()
+                    
+                    TweenService:Create(DropdownIcon, MOTION.Medium, {
+                        Rotation = 0
+                    }):Play()
+                    
+                    spawn(function()
+                        wait(0.25)
+                        if not isOpen then
+                            OptionsContainer.Visible = false
+                        end
+                    end)
+                    
+                    connection:Disconnect()
+                end
+            end
+        end)
+    end
+    
+    -- Add method to update options dynamically
+    function DropdownFrame:UpdateOptions(newOptions)
+        -- Clear existing options
+        for _, btn in pairs(optionButtons) do
+            btn.Button:Destroy()
+        end
+        optionButtons = {}
+        
+        -- Create new options
+        for index, option in ipairs(newOptions) do
+            createOption(option, index)
+        end
+        
+        -- Update selected if it's not in new options
+        if not table.find(newOptions, selectedOption) and #newOptions > 0 then
+            selectedOption = newOptions[1]
+            DropdownText.Text = selectedOption
+            if config.Callback then
+                config.Callback(selectedOption)
+            end
+        end
+    end
+    
+    -- Initialize with proper selection state
+    if selectedOption and optionButtons[selectedOption] then
+        optionButtons[selectedOption].CheckMark.Visible = true
+    end
     
     return DropdownFrame
 end
